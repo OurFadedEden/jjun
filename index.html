@@ -211,12 +211,27 @@
   <h1 class="main-title" id="coverTitle">THE TWILIGHT ARCHIVE</h1>
   <div class="main-sub" id="coverSubtitle">황 혼 기 록 · TAPE NO. 0305</div>
   <div class="vhs-shell">
+  <div class="tv-body"><div class="tv-picture">
    <div class="vhs-screen" id="coverScreen">
     <div class="analog-noise" aria-hidden="true"></div><div class="sun" id="coverSun"></div><div class="sea-glow"></div><div class="wave w1"></div><div class="wave w2"></div><div class="wave w3"></div>
     <div class="memory-reel" id="memoryReel" aria-live="polite"><div class="reel-placeholder" id="reelPlaceholder">A MEMORY BELOW THE SURFACE</div><div class="reel-label" id="reelLabel">FRAME 01 / THE LAST LIGHT</div></div>
     <div class="screen-label" id="coverLabel"><span class="screen-rec">● REC</span><br>DEEP SEA / CAM 01</div><div class="screen-time" id="coverTime">03:05:25</div>
     <div class="screen-bottom"><span id="coverPlayText">PLAY ▶</span><span>SP · <span id="elapsed">00:00</span></span><span id="trackingText">TRACKING ▰▰▰</span></div>
    </div>
+  </div>
+  <aside class="tape-controls" aria-label="테이프 재생 조작">
+   <div class="hardware-brand">TWA<span>PORTABLE COLOR TV</span></div>
+   <div class="power-lamp"><i></i> POWER</div>
+   <button type="button" id="fastForward" class="transport-lever" aria-label="4배 빠른감기" aria-pressed="false" disabled>
+    <span class="lever-track" aria-hidden="true"><span class="lever-grip"></span></span>
+    <span class="control-label">FF ▸▸<small>빠른감기</small></span>
+   </button>
+   <div id="speedStatus" class="speed-status" role="status">NORMAL · 1×</div>
+   <button type="button" id="skipReel" class="transport-skip" disabled><span aria-hidden="true">▸▸│</span><span>건너뛰기</span></button>
+   <div class="tape-window" aria-hidden="true"><i></i><span>―</span><i></i></div>
+   <div class="speaker-grille" aria-hidden="true"></div>
+   <div class="hardware-model">0305 / STEREO</div>
+  </aside></div>
    <div class="reel-progress" aria-hidden="true"><span id="reelProgress"></span></div><div class="tape-caption"><span class="micro" id="coverCaption">ARCHIVE SUBJECT : TWILIGHT / DEEP SEA</span><span class="micro gold" id="coverSignal">SIGNAL FOUND</span></div>
   </div>
   <div class="entrance-note" id="coverNote">SOME MEMORIES NEVER REACH THE SURFACE.</div>
@@ -257,32 +272,57 @@ function setReelFrame(frame,active=true){
  reel.classList.toggle('active',active);
  reel.classList.remove('scene-change');void reel.offsetWidth;reel.classList.add('scene-change');
 }
-let playbackTimer=null,playbackActive=false,frameIndex=0,clockTimer=null;
-function stopPlayback(){clearTimeout(playbackTimer);clearInterval(clockTimer);playbackTimer=null;clockTimer=null;playbackActive=false;document.getElementById('coverScreen').classList.remove('playing')}
+let playbackActive=false,frameIndex=0,clockTimer=null,playbackRate=1;
+let reelFrames=[],sceneElapsed=0,tapeElapsed=0,lastTick=0;
+function sceneDuration(frame){return Math.min(15000,Math.max(1000,Number(frame.durationMs)||Number(config.cover.durationMs)||3200))}
+function updateTransport(){
+ const fast=playbackRate===4;
+ document.getElementById('fastForward').setAttribute('aria-pressed',String(fast));
+ document.getElementById('speedStatus').textContent=fast?'FAST FWD · 4×':'NORMAL · 1×';
+ document.getElementById('coverPlayText').textContent=fast?'▶▶ FF · 4×':'▶ PLAY';
+ document.getElementById('entrance').classList.toggle('fast-forward',fast);
+ for(const id of ['fastForward','skipReel'])document.getElementById(id).disabled=!playbackActive;
+}
+function stopPlayback(){
+ clearInterval(clockTimer);clockTimer=null;playbackActive=false;playbackRate=1;updateTransport();
+ document.getElementById('coverScreen').classList.remove('playing');
+}
 function enterArchive(){
  stopPlayback();document.getElementById('entrance').classList.add('hidden');
  document.getElementById('archive').classList.remove('hidden');
  document.getElementById('pageTitle').focus({preventScroll:true});window.scrollTo(0,0);
 }
-function playMemoryReel(){
- stopPlayback();
- const frames=(config.cover.memories||[]).filter(f=>f&&(f.image||f.caption||f.label||f.subcaption));
- if(!frames.length){enterArchive();return}
- playbackActive=true;frameIndex=0;
- const screen=document.getElementById('coverScreen');screen.classList.add('playing');
- document.getElementById('coverPlayText').textContent='▶ PLAY';
- const begun=Date.now();
- const clock=()=>{const seconds=Math.floor((Date.now()-begun)/1000);document.getElementById('elapsed').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
- clock();clockTimer=setInterval(clock,250);
- const tick=()=>{
-  if(!playbackActive)return;
-  const frame=frames[frameIndex];setReelFrame(frame,true);frameIndex++;
-  document.getElementById('coverSignal').textContent=`${String(frameIndex).padStart(2,'0')} / ${String(frames.length).padStart(2,'0')} · MEMORY REEL`;
-  document.getElementById('reelProgress').style.width=`${frameIndex/frames.length*100}%`;
-  const duration=Math.min(15000,Math.max(1000,Number(frame.durationMs)||Number(config.cover.durationMs)||3200));
-  playbackTimer=setTimeout(frameIndex>=frames.length?enterArchive:tick,duration);
- };tick();
+function showReelScene(){
+ setReelFrame(reelFrames[frameIndex],true);
+ document.getElementById('coverScreen').style.setProperty('--scene-hue',`${frameIndex*8}deg`);
+ document.getElementById('coverSignal').textContent=`${String(frameIndex+1).padStart(2,'0')} / ${String(reelFrames.length).padStart(2,'0')} · MEMORY REEL`;
 }
+function advanceTape(now){
+ if(!playbackActive)return;
+ const elapsed=(now-lastTick)*playbackRate;lastTick=now;sceneElapsed+=elapsed;tapeElapsed+=elapsed;
+ while(sceneElapsed>=sceneDuration(reelFrames[frameIndex])){
+  sceneElapsed-=sceneDuration(reelFrames[frameIndex]);frameIndex++;
+  if(frameIndex>=reelFrames.length){document.getElementById('reelProgress').style.width='100%';enterArchive();return}
+  showReelScene();
+ }
+ const seconds=Math.floor(tapeElapsed/1000);
+ document.getElementById('elapsed').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
+ document.getElementById('reelProgress').style.width=`${(frameIndex+sceneElapsed/sceneDuration(reelFrames[frameIndex]))/reelFrames.length*100}%`;
+}
+function playMemoryReel(){
+ stopPlayback();reelFrames=(config.cover.memories||[]).filter(f=>f&&(f.image||f.caption||f.label||f.subcaption));
+ if(!reelFrames.length){enterArchive();return}
+ playbackActive=true;frameIndex=0;sceneElapsed=0;tapeElapsed=0;lastTick=performance.now();
+ document.getElementById('coverScreen').classList.add('playing');
+ updateTransport();showReelScene();advanceTape(lastTick);
+ clockTimer=setInterval(()=>advanceTape(performance.now()),50);
+}
+document.getElementById('fastForward').addEventListener('click',()=>{
+ if(!playbackActive)return;
+ advanceTape(performance.now());if(!playbackActive)return;
+ playbackRate=playbackRate===1?4:1;updateTransport();
+});
+document.getElementById('skipReel').addEventListener('click',()=>{if(playbackActive)enterArchive()});
 function applyHeader(){const h=config.header||{};const map={siteBrand:h.brand,siteTagline:h.tagline,systemStatus:h.status,systemTape:h.tape,radarTitle:h.radarTitle,radarDepth:h.depth,radarSignal:h.signal,radarState:h.state,navTitle:h.navTitle,sideNote:h.sideNote,footerLeft:h.footer};Object.entries(map).forEach(([id,val])=>{let el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=nl(val)})}
 function renderNav(active){let nav=document.getElementById('nav');nav.innerHTML=(config.pages||[]).map((p,i)=>`<button data-page="${escapeHTML(p.id)}" class="${p.id===active?'active':''}"><span>${String(i).padStart(2,'0')} / ${escapeHTML(p.nav||p.title)}</span><span class="num">↗</span></button>`).join('');nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)))}
 function cssImage(src){return escapeHTML('url('+JSON.stringify(ArchiveConfig.image(src))+')')}

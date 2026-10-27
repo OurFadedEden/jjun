@@ -11,7 +11,7 @@ fs.mkdirSync(path.join(root,'artifacts'),{recursive:true});
  const base='http://127.0.0.1:8000/';
  await page.addInitScript(()=>{window.seenFrames=[];setInterval(()=>{const signal=document.querySelector('#coverSignal')?.textContent;const label=document.querySelector('#reelLabel')?.textContent;if(signal?.includes('MEMORY REEL')&&window.seenFrames.at(-1)!==label)window.seenFrames.push(label)},40)});
  await page.goto(base);await page.waitForSelector('#coverScreen.playing');
- assert.equal(await page.locator('#entrance button').count(),0);
+ assert.equal(await page.locator('#fastForward').getAttribute('aria-pressed'),'false');
  await page.screenshot({path:path.join(root,'artifacts/entrance-desktop.png')});
  await page.waitForSelector('#archive:not(.hidden)',{timeout:22000});
  assert.deepEqual(await page.evaluate(()=>window.seenFrames),JSON.parse(fs.readFileSync(path.join(root,'config.json'),'utf8')).cover.memories.map(s=>s.caption));
