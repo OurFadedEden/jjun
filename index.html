@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071521">
+<title>THE TWILIGHT ARCHIVE · 황혼기록</title>
+<style>
+:root{--deep:#071521;--ink:#0b1c29;--blue:#a5d4fa;--gold:#faeda5;--paper:#e4edf0;--muted:#8097a6;--line:#a5d4fa35;--serif:Georgia,'Times New Roman',serif;--mono:ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}html{background:var(--deep);scroll-behavior:smooth}body{margin:0;background:var(--deep);color:var(--paper);font:14px/1.7 Arial,'Apple SD Gothic Neo',sans-serif;min-height:100vh}button,a{font:inherit}button{cursor:pointer}a{color:var(--blue)}.hidden{display:none!important}.mono{font-family:var(--mono);letter-spacing:.08em}.micro{font:10px/1.7 var(--mono);letter-spacing:.1em;color:var(--muted)}.gold{color:var(--gold)}.blue{color:var(--blue)}
+/* entrance: intentionally keeps the VHS-first idea */
+#entrance{min-height:100svh;display:grid;place-items:center;padding:28px 16px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#1a3a4a 0,#0b1c29 43%,#040c13 100%)}
+#entrance:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#0002 4px 5px);opacity:.65}
+.entrance-inner{width:min(700px,100%);position:relative;z-index:1;text-align:center}
+.kicker{font:10px var(--mono);letter-spacing:.25em;color:var(--blue)}.main-title{font:clamp(25px,6vw,43px)/1.2 var(--serif);letter-spacing:.075em;color:#f3f0df;margin:13px 0 8px}.main-sub{font:10px var(--mono);letter-spacing:.2em;color:var(--gold);margin:0 0 27px}
+.vhs-shell{padding:10px;border:1px solid #a5d4fa55;background:linear-gradient(130deg,#a5d4fa16,#0005);box-shadow:0 20px 70px #0008,inset 0 0 0 3px #071521;border-radius:3px}
+.vhs-screen{position:relative;aspect-ratio:16/9;min-height:180px;overflow:hidden;background:linear-gradient(180deg,#d6a47a 0%,#b8a78e 25%,#537b8b 47%,#174257 67%,#061521 100%);background-size:cover;background-position:center;isolation:isolate}
+.vhs-screen.has-image{background-image:var(--cover-image);background-color:#102b3a}
+.vhs-screen:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#020a1280 4px 5px),linear-gradient(180deg,#fff1,transparent 35%,#0003)}
+.vhs-screen:after{content:"";position:absolute;left:-5%;right:-5%;top:53%;height:1px;background:#faeda5;box-shadow:0 0 15px 4px #faeda566;transform:rotate(-1deg);opacity:.8}
+.sun{position:absolute;width:18%;aspect-ratio:1;border-radius:50%;left:52%;top:27%;transform:translateX(-50%);background:#faeda5;box-shadow:0 0 35px 12px #faeda544;opacity:.9}
+.sea-glow{position:absolute;left:44%;top:55%;width:19%;height:42%;background:linear-gradient(#faeda599,transparent);filter:blur(12px)}
+.wave{position:absolute;left:-10%;right:-10%;height:35%;border-top:1px solid #a5d4fa99;border-radius:50%;transform:rotate(-3deg)}.w1{top:58%}.w2{top:66%;left:4%;transform:rotate(3deg)}.w3{top:75%;left:-2%;transform:rotate(-2deg)}
+.screen-label{position:absolute;z-index:3;left:14px;top:12px;text-align:left;font:10px/1.5 var(--mono);color:#fff;text-shadow:0 1px 5px #001}.screen-time{position:absolute;z-index:3;right:14px;top:12px;font:10px var(--mono);color:#fff;text-shadow:0 1px 5px #001}.screen-bottom{position:absolute;z-index:3;bottom:12px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px;font:9px var(--mono);color:#fff;text-shadow:0 1px 5px #001}
+.tape-caption{display:flex;justify-content:space-between;gap:8px;text-align:left;padding:11px 2px 3px}.play{margin-top:22px;padding:12px 24px;border:1px solid var(--gold);background:#faeda50a;color:var(--gold);font:11px var(--mono);letter-spacing:.15em;transition:.2s}.play:hover{background:var(--gold);color:var(--deep);box-shadow:0 0 25px #faeda533}.entrance-note{margin-top:14px;font:10px var(--mono);letter-spacing:.08em;color:var(--muted)}
+
+/* analog tape texture + memory reel */
+.vhs-shell{padding:12px;background:linear-gradient(145deg,#293b43,#0a1118 28%,#18232a 70%,#050a0e);border:1px solid #778a8d;border-radius:2px;box-shadow:0 24px 70px #000b,inset 0 0 0 1px #000,inset 0 0 0 5px #17232a}
+.vhs-screen{box-shadow:inset 0 0 35px #0009;filter:saturate(.82) contrast(1.08)}
+.vhs-screen:before{background:repeating-linear-gradient(0deg,transparent 0 2px,#0005 3px 4px),linear-gradient(90deg,#8fc5e408,transparent 30%,#faeda508 70%,transparent),linear-gradient(180deg,#fff2,transparent 22%,#0004);mix-blend-mode:screen}
+.vhs-screen:after{content:"";position:absolute;left:0;right:0;top:52%;height:2px;background:#fff;box-shadow:0 0 12px 4px #d8e9ef55;opacity:0;z-index:4;pointer-events:none}
+.vhs-screen.playing:after{opacity:.45;animation:tracking-roll 1.4s linear infinite}
+@keyframes tracking-roll{0%{top:-3%}100%{top:105%}}
+.vhs-screen:focus-within{outline:1px solid var(--gold)}
+.vhs-screen.playing{animation:vhs-jitter .12s steps(2,end) infinite}
+@keyframes vhs-jitter{0%{transform:translateX(0)}50%{transform:translateX(.5px)}100%{transform:translateX(-.5px)}}
+.memory-reel{position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:#06131d;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.memory-reel.active{opacity:1}
+.memory-reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) contrast(1.08);animation:memory-zoom 1.35s ease both}
+.memory-reel .reel-placeholder{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 35%,#a5d4fa32,transparent 50%),linear-gradient(135deg,#7d624b,#1a3e4d 52%,#061521);color:#f4efdc;font:clamp(11px,2.5vw,17px) var(--serif);letter-spacing:.15em;text-align:center;padding:18px}
+.memory-reel .reel-placeholder:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,#0004 4px 5px)}
+.memory-reel .reel-label{position:absolute;z-index:2;left:14px;bottom:30px;color:#fff;font:10px var(--mono);letter-spacing:.1em;text-shadow:0 1px 5px #000}
+@keyframes memory-zoom{from{transform:scale(1.06);opacity:.45}to{transform:scale(1);opacity:1}}
+.vhs-screen.playing .sun,.vhs-screen.playing .sea-glow,.vhs-screen.playing .wave{opacity:.12}
+.screen-rec{color:#ff776d!important}
+.tape-caption{border-top:1px solid #a5d4fa25;margin-top:5px;padding:10px 3px 2px}
+.play{min-width:190px;position:relative;text-transform:uppercase}
+.play:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:9px;box-shadow:0 0 8px var(--gold)}
+.play[disabled]{opacity:.7;cursor:wait}
+.entrance-note{line-height:1.8}
+
+
+/* analog memory playback */
+#entrance{background:radial-gradient(ellipse at 50% 25%,#243f49 0,#101c25 45%,#03070b 100%)}
+.vhs-shell{padding:12px;background:linear-gradient(135deg,#d2d1c31b,#05080b 45%,#a5d4fa10);border:1px solid #b7c5c7a0;box-shadow:0 25px 70px #000b,inset 0 0 0 2px #02070b,inset 0 0 0 4px #d8d2bd14}
+.vhs-screen{filter:saturate(.78) contrast(1.08);box-shadow:inset 0 0 35px #0008}
+.vhs-screen:before{background:repeating-linear-gradient(0deg,transparent 0 2px,#0003 3px 4px),linear-gradient(90deg,#b1c5d022,transparent 15%,transparent 85%,#0005),linear-gradient(180deg,#fff2,transparent 28%,#0005);opacity:.95}
+.vhs-screen:after{height:2px;box-shadow:0 0 12px 3px #faeda566;animation:vhsJitter 5s steps(1) infinite}
+@keyframes vhsJitter{0%,91%,100%{transform:translateY(0) rotate(-1deg);opacity:.65}92%{transform:translateY(-9px) rotate(-1deg);opacity:1}94%{transform:translateY(5px) rotate(-1deg);opacity:.35}96%{transform:translateY(0) rotate(-1deg);opacity:.9}}
+.kicker{color:#c3d2d0}.main-title{text-shadow:0 2px 0 #0008,0 0 22px #faeda522}.play{border-color:#d4d0b2;background:#0b1117;color:#f5e8aa;box-shadow:inset 0 0 0 1px #000,0 4px 0 #020508;min-width:210px}.play:hover{background:#e8dfb9;color:#10191f;transform:translateY(-1px)}
+.memory-playback{position:fixed;z-index:30;inset:0;display:grid;place-items:center;padding:16px;background:#030609;overflow:hidden}
+.memory-playback:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#fff0 0 2px,#0008 3px 4px);z-index:3;opacity:.45}
+.playback-frame{width:min(1000px,100%);position:relative;padding:10px;border:1px solid #a9b5b4;background:linear-gradient(145deg,#b9b8a41a,#020609 45%,#a5d4fa0a);box-shadow:0 25px 100px #000c,inset 0 0 0 3px #020508}
+.playback-screen{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:16/9;max-height:72svh;background:radial-gradient(ellipse at 50% 45%,#315264,#0a1b27 64%,#03080c);background-size:cover;background-position:center;transition:background-image .2s}
+.playback-screen:before{content:"";position:absolute;z-index:2;inset:0;pointer-events:none;background:linear-gradient(90deg,#0005,transparent 12%,transparent 88%,#0005),linear-gradient(180deg,#0007,transparent 22%,transparent 62%,#000b),repeating-linear-gradient(0deg,transparent 0 3px,#0005 4px 5px);mix-blend-mode:normal}
+.playback-screen:after{content:"";position:absolute;z-index:4;left:0;right:0;top:-10%;height:8%;background:linear-gradient(180deg,transparent,#d6e3dc55,transparent);animation:scanDown 2.8s linear infinite;pointer-events:none}
+@keyframes scanDown{to{top:110%}}
+.playback-noise{position:absolute;inset:-40%;z-index:1;opacity:.1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");animation:noiseShift .22s steps(2) infinite}
+@keyframes noiseShift{0%{transform:translate(0,0)}50%{transform:translate(-2%,1%)}100%{transform:translate(1%,-2%)}}
+.playback-hud{position:absolute;z-index:5;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;gap:10px;font:clamp(8px,1.5vw,11px) var(--mono);letter-spacing:.08em;color:#e9eee0;text-shadow:0 2px 5px #000}
+.playback-placeholder{position:absolute;z-index:1;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#c4d5d8;font:clamp(10px,2vw,16px) var(--mono);letter-spacing:.12em}
+.playback-placeholder small{font:10px/1.6 Arial,sans-serif;letter-spacing:0;color:#b3c1c4}
+.playback-caption{position:absolute;z-index:5;left:clamp(14px,4vw,38px);right:clamp(14px,4vw,38px);bottom:clamp(18px,5vw,44px);text-align:left;text-shadow:0 2px 8px #000}
+.playback-caption div{font:clamp(14px,3vw,25px) var(--serif);letter-spacing:.12em;color:#f5e9b1}
+.playback-caption p{font-size:clamp(11px,1.7vw,15px);color:#e0e8e7;margin:8px 0 0}
+.tracking-line{position:absolute;z-index:6;left:0;right:0;bottom:15%;height:1px;background:#d8e7d455;box-shadow:0 0 12px #d8e7d455;animation:tracking 3.5s steps(1) infinite}
+@keyframes tracking{0%,80%,100%{transform:translateY(0);opacity:.5}81%{transform:translateY(-13px);opacity:1}84%{transform:translateY(6px);opacity:.2}}
+.playback-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px 8px;flex-wrap:wrap}.skip-playback{border:1px solid #a5d4fa66;background:#071521;color:#d6e1e0;padding:8px 11px;font:9px var(--mono);letter-spacing:.06em}.skip-playback:hover{border-color:var(--gold);color:var(--gold)}.playback-progress{height:2px;background:#a5d4fa20}.playback-progress span{display:block;width:0;height:100%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.playback-screen.scene-change{animation:sceneFlash .45s ease}
+@keyframes sceneFlash{0%{filter:brightness(1)}18%{filter:brightness(2.3) contrast(1.4)}35%{filter:brightness(.55)}100%{filter:brightness(1)}}
+
+/* interior: paired twilight / abyss, not generic dashboard */
+#archive{min-height:100vh;padding:18px 12px 30px;background:radial-gradient(ellipse at 85% 0,#16384a 0,transparent 36%),linear-gradient(150deg,#071521,#091a26 65%,#06111b)}
+.frame{width:min(1050px,100%);margin:0 auto;border:1px solid #a5d4fa38;background:#06131de8;box-shadow:0 25px 80px #0006;position:relative}
+.frame:before{content:"";position:absolute;inset:5px;border:1px solid #faeda512;pointer-events:none}
+.topbar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);background:linear-gradient(100deg,#faeda50a,transparent 45%,#a5d4fa0a)}
+.brand{font:clamp(13px,2vw,16px) var(--serif);letter-spacing:.14em;color:#f1efdf}.brand-sub{font:9px var(--mono);letter-spacing:.16em;color:var(--muted);margin-top:4px}.status{text-align:right;font:9px/1.8 var(--mono);letter-spacing:.09em}.status b{color:var(--gold);font-weight:400}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);position:relative;min-height:600px}
+.side{padding:16px 13px;border-right:1px solid var(--line);background:linear-gradient(180deg,#a5d4fa06,transparent 65%)}
+.sonar-panel{border:1px solid var(--line);padding:10px;margin-bottom:18px;background:#06131c}.panel-label{font:9px var(--mono);letter-spacing:.16em;color:var(--blue);border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:9px}
+.radar{width:min(100%,170px);aspect-ratio:1;border:1px solid #a5d4fa5c;border-radius:50%;margin:5px auto 10px;position:relative;overflow:hidden;background:repeating-radial-gradient(circle,transparent 0 18%,#a5d4fa22 18.5% 19%,transparent 19.5% 25%),linear-gradient(90deg,transparent 49.5%,#a5d4fa35 50%,transparent 50.5%),linear-gradient(0deg,transparent 49.5%,#a5d4fa35 50%,transparent 50.5%)}
+.radar:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 72%,#a5d4fa55 90%,transparent 100%);animation:spin 7s linear infinite}.radar:after{content:"";position:absolute;left:50%;top:50%;width:50%;height:1px;background:var(--blue);transform:rotate(-35deg);transform-origin:left;box-shadow:0 0 8px var(--blue)}
+@keyframes spin{to{transform:rotate(360deg)}}.blip{position:absolute;z-index:2;width:5px;height:5px;border-radius:50%;left:65%;top:32%;background:var(--gold);box-shadow:0 0 9px var(--gold)}.blip.b2{left:34%;top:61%;background:var(--blue);box-shadow:0 0 9px var(--blue)}
+.radar-data{font:8px/1.9 var(--mono);color:var(--muted);display:grid;gap:1px}
+.nav-title{font:9px var(--mono);letter-spacing:.15em;color:var(--muted);margin:0 0 8px;padding:0 3px}
+.nav{display:grid;gap:4px}.nav button{display:flex;align-items:center;justify-content:space-between;text-align:left;gap:8px;width:100%;padding:10px 9px;color:#a9bac5;background:transparent;border:1px solid transparent;font:9px var(--mono);letter-spacing:.045em;transition:.2s}.nav button .num{color:#526c7d}.nav button:hover,.nav button.active{border-color:#a5d4fa35;background:linear-gradient(90deg,#a5d4fa12,#faeda506);color:var(--gold)}.nav button.active .num{color:var(--gold)}
+.side-note{border-top:1px solid var(--line);margin-top:18px;padding-top:12px;font:9px/1.8 var(--mono);color:var(--muted)}
+.content{padding:22px;min-width:0}.content-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:18px}.content-title{font:clamp(18px,3vw,27px)/1.25 var(--serif);letter-spacing:.07em;color:#f0efdf;margin:0}.content-sub{font:9px var(--mono);letter-spacing:.12em;color:var(--blue);margin-top:6px}.tag{font:8px var(--mono);letter-spacing:.1em;border:1px solid #faeda544;color:var(--gold);padding:5px 7px;white-space:nowrap}
+.card{border:1px solid var(--line);background:linear-gradient(125deg,#a5d4fa08,transparent 50%,#faeda504);padding:16px;margin-bottom:12px;min-width:0}.card h3{font:10px var(--mono);letter-spacing:.13em;color:var(--gold);margin:0 0 9px}.card p{margin:5px 0;color:#b8c8d1}.eyebrow{font:9px var(--mono);letter-spacing:.14em;color:var(--blue)}
+.home-hero{min-height:220px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(0deg,#06131deF,transparent 80%),linear-gradient(120deg,#b88b5b20,#a5d4fa08),#0a2331;background-size:cover;background-position:center}
+.home-hero.has-image{background-image:linear-gradient(0deg,#06131df2,transparent 85%),var(--hero-image)}
+.home-hero:after{content:"";position:absolute;right:-50px;top:-70px;width:250px;height:250px;border:1px solid #faeda522;border-radius:50%;box-shadow:0 0 0 22px #a5d4fa08,0 0 0 48px #a5d4fa05;pointer-events:none}.home-hero>*{position:relative;z-index:1}.home-hero h2{font:clamp(24px,4vw,38px) var(--serif);letter-spacing:.08em;color:#f1eedb;margin:5px 0}.home-hero .description{max-width:500px;font:italic 15px/1.8 var(--serif);color:#c5d3d9}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.image-slot{position:relative;min-height:140px;border:1px dashed #a5d4fa66;background:linear-gradient(135deg,#a5d4fa0b,#faeda506);display:grid;place-items:center;text-align:center;padding:14px;overflow:hidden;background-size:cover;background-position:center}.image-slot.has-image{border-style:solid}.image-slot .slot-text{font:9px/1.8 var(--mono);letter-spacing:.08em;color:#9cb7c6;text-shadow:0 1px 5px #06131d}.image-slot img{max-width:100%;height:auto;display:block}.image-slot .slot-text b{display:block;color:var(--gold);font-weight:400;font-size:10px}
+.subject{min-height:210px;position:relative;overflow:hidden;background:linear-gradient(130deg,#faeda50c,transparent 60%)}.subject.blue-subject{background:linear-gradient(130deg,#a5d4fa10,transparent 60%)}.subject .subject-image{height:115px;margin:-16px -16px 13px;background:linear-gradient(135deg,#faeda50b,#a5d4fa0a);background-position:center;background-size:cover;border-bottom:1px solid var(--line);display:grid;place-items:center}.subject .subject-image span{font:9px var(--mono);color:var(--muted);letter-spacing:.1em}.subject h3{font:21px var(--serif);color:var(--paper);letter-spacing:.05em;margin:4px 0}.action{display:inline-block;border:1px solid #a5d4fa4a;color:var(--blue);background:#06131c;padding:7px 10px;font:9px var(--mono);letter-spacing:.08em;text-decoration:none}.action:hover{border-color:var(--gold);color:var(--gold)}
+.timeline{border-left:1px solid #a5d4fa55;margin:4px 0 0 5px;padding-left:18px}.event{position:relative;margin:0 0 20px}.event:before{content:"";position:absolute;width:6px;height:6px;left:-22px;top:7px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px #faeda566}.event .date{font:9px var(--mono);color:var(--blue);letter-spacing:.1em}.event h3{margin:4px 0;color:var(--paper);font-size:13px}.event p{margin:0;color:#9eb2bf;font-size:12px}
+.quote{border-left:2px solid var(--gold);padding:12px 15px;font:italic 17px/1.8 var(--serif);color:#e0e7e6;background:#faeda506}.tape-card{padding:13px;border:1px solid var(--line);background:#091a26}.tape-card .tape-no{font:9px var(--mono);color:var(--gold)}.tape-card h3{font:16px var(--serif);color:var(--paper);margin:6px 0}.tape-card p{font-size:12px;color:#a9bbc7;margin:0}
+.footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 18px;border-top:1px solid var(--line);font:8px var(--mono);letter-spacing:.08em;color:var(--muted)}.footer button{border:0;background:transparent;color:var(--blue);font:inherit;letter-spacing:inherit;padding:0}.footer button:hover{color:var(--gold)}
+/* uploaded images and user-defined layout */
+.user-image{width:100%;height:100%;object-fit:cover;display:block}
+
+/* readability pass: denser hierarchy, less tiny type */
+#archive{font-size:14px;line-height:1.75}
+.frame{border-color:#a5d4fa55;background:#06131df5}
+.topbar{padding:18px 24px}
+.brand{font-size:clamp(15px,2.2vw,19px);letter-spacing:.11em}
+.brand-sub,.status{font-size:10px}
+.layout{grid-template-columns:230px minmax(0,1fr)}
+.side{padding:18px 14px}
+.panel-label,.nav-title{font-size:10px}
+.radar-data{font-size:9px}
+.nav button{font-size:10px;padding:11px 10px;letter-spacing:.025em}
+.content{padding:25px}
+.content-title{font-size:clamp(21px,3vw,30px);letter-spacing:.045em}
+.content-sub{font-size:10px}
+.tag{font-size:9px;padding:6px 9px}
+.card{padding:18px;margin-bottom:14px;background:linear-gradient(135deg,#a5d4fa0b,transparent 55%,#faeda507);border-color:#a5d4fa4a}
+.card h3{font-size:11px;letter-spacing:.09em}
+.card p{font-size:14px;line-height:1.85;color:#d0dbe0}
+.eyebrow{font-size:10px}
+.home-hero{min-height:245px;padding:22px}
+.home-hero .description{font-size:16px;line-height:1.85;color:#d9e1df}
+.grid2,.split{gap:14px}
+.subject{padding:17px}
+.subject h3{font-size:13px;letter-spacing:.08em}
+.subject p,.tape-card p{font-size:13px;line-height:1.8;color:#cbd8df}
+.subject .subject-image{height:135px}
+.image-slot{min-height:155px}
+.tape-card{padding:17px;border-color:#a5d4fa48;background:linear-gradient(140deg,#a5d4fa0a,#06131d 60%,#faeda505)}
+.tape-no{font-size:10px}
+.quote{font-size:clamp(20px,3vw,28px);line-height:1.6}
+.event{padding:2px 0 20px 22px}
+.event .date{font-size:10px}
+.event h3{font-size:14px}
+.footer{font-size:10px}
+.footer button{font-size:10px}
+@media(max-width:680px){
+ .layout{grid-template-columns:1fr}
+ .topbar{padding:14px 13px}
+ .side{padding:12px}
+ .content{padding:17px 13px}
+ .nav button{font-size:9px;padding:10px 7px}
+ .card{padding:15px}
+ .home-hero{min-height:210px;padding:17px}
+ .home-hero .description{font-size:14px}
+ .subject .subject-image{height:145px}
+ .playback-frame{padding:6px}
+ .playback-screen{aspect-ratio:4/3;max-height:67svh}
+ .playback-hud{top:9px;left:10px;right:10px}
+ .playback-placeholder small{max-width:80%}
+ .playback-controls{padding-top:9px}
+ .skip-playback{padding:7px 8px}
+}
+
+@media(max-width:680px){#archive{padding:7px 6px 18px}.topbar{padding:13px 14px}.layout{grid-template-columns:1fr;min-height:0}.side{border-right:0;border-bottom:1px solid var(--line);padding:11px}.sonar-panel{display:grid;grid-template-columns:82px 1fr;align-items:center;gap:10px;margin-bottom:12px}.radar{width:78px;margin:0}.nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.nav button{padding:10px 7px;font-size:8px}.side-note{display:none}.content{padding:15px 12px}.grid2,.split{grid-template-columns:1fr}.home-hero{min-height:190px}.content-head{margin-bottom:13px}.tag{font-size:7px}.vhs-screen{min-height:155px}}
+
+/* second-pass interior polish: clearer hierarchy, tighter information rhythm */
+.topbar{padding:14px 20px}
+.layout{grid-template-columns:205px minmax(0,1fr)}
+.side{padding:13px 11px}
+.sonar-panel{padding:9px;margin-bottom:14px}
+.content{padding:19px}
+.content-head{padding-bottom:12px;margin-bottom:14px}
+.card{padding:14px;margin-bottom:10px;background:linear-gradient(125deg,#a5d4fa0b,transparent 52%,#faeda506)}
+.card p{color:#d0dce2;line-height:1.8;font-size:13px}
+.card h3{font-size:10px}
+.nav button{padding:9px 8px;line-height:1.45}
+.home-hero{min-height:205px}
+.home-hero .description{font-size:14px;line-height:1.85;color:#e0e7e9}
+.subject .subject-image{height:130px}
+.subject p{font-size:12px}
+.tape-card{padding:13px}
+.tape-card p{font-size:12px;line-height:1.8;color:#c8d5dc}
+.timeline .event{padding:0 0 18px 18px;margin-left:5px}
+.footer{padding:10px 16px}
+@media(max-width:680px){
+ .layout{grid-template-columns:1fr}
+ .content{padding:13px 11px}
+ .topbar{padding:12px}
+ .card{padding:12px}
+ .home-hero{min-height:180px}
+ .subject .subject-image{height:145px}
+ .vhs-shell{padding:7px}
+ .vhs-screen{min-height:160px}
+ .screen-label{left:9px;top:8px;font-size:9px}
+ .screen-time{right:9px;top:8px;font-size:9px}
+ .screen-bottom{left:9px;right:9px;bottom:8px;font-size:8px}
+ .tape-caption{gap:6px;flex-wrap:wrap}
+}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+
+.reel-subcaption{position:absolute;z-index:4;left:8%;right:8%;bottom:15%;font:clamp(10px,1.4vw,14px)/1.6 var(--sans);color:#e0e8e7;text-shadow:0 2px 6px #000;letter-spacing:.04em;text-align:center;pointer-events:none}
+.memory-reel.active .reel-label{bottom:27%}
+@media(max-width:680px){.reel-subcaption{bottom:12%;font-size:10px}.memory-reel.active .reel-label{bottom:25%}}
+</style>
+<link rel="stylesheet" href="refinements.css">
+</head>
+<body>
+<section id="entrance">
+ <div class="entrance-inner">
+  <div class="kicker" id="coverKicker">DEEP SEA OBSERVATION STATION</div>
+  <h1 class="main-title" id="coverTitle">THE TWILIGHT ARCHIVE</h1>
+  <div class="main-sub" id="coverSubtitle">황 혼 기 록 · TAPE NO. 0305</div>
+  <div class="vhs-shell">
+   <div class="vhs-screen" id="coverScreen">
+    <div class="analog-noise" aria-hidden="true"></div><div class="sun" id="coverSun"></div><div class="sea-glow"></div><div class="wave w1"></div><div class="wave w2"></div><div class="wave w3"></div>
+    <div class="memory-reel" id="memoryReel" aria-live="polite"><div class="reel-placeholder" id="reelPlaceholder">A MEMORY BELOW THE SURFACE</div><div class="reel-label" id="reelLabel">FRAME 01 / THE LAST LIGHT</div></div>
+    <div class="screen-label" id="coverLabel"><span class="screen-rec">● REC</span><br>DEEP SEA / CAM 01</div><div class="screen-time" id="coverTime">03:05:25</div>
+    <div class="screen-bottom"><span id="coverPlayText">PLAY ▶</span><span>SP · <span id="elapsed">00:00</span></span><span id="trackingText">TRACKING ▰▰▰</span></div>
+   </div>
+   <div class="reel-progress" aria-hidden="true"><span id="reelProgress"></span></div><div class="tape-caption"><span class="micro" id="coverCaption">ARCHIVE SUBJECT : TWILIGHT / DEEP SEA</span><span class="micro gold" id="coverSignal">SIGNAL FOUND</span></div>
+  </div>
+  <div class="entrance-note" id="coverNote">SOME MEMORIES NEVER REACH THE SURFACE.</div>
+ </div>
+</section>
+<section id="archive" class="hidden">
+ <div class="frame">
+  <header class="topbar"><div><div class="brand" id="siteBrand">THE TWILIGHT ARCHIVE</div><div class="brand-sub" id="siteTagline">DEEP SEA OBSERVATION SYSTEM</div></div><div class="status"><b id="systemStatus">● SYSTEM ONLINE</b><br><span id="systemTape">TAPE NO. 0305</span></div></header>
+  <div class="layout">
+   <aside class="side">
+    <div class="sonar-panel"><div class="radar" id="radar"><i class="blip"></i><i class="blip b2"></i></div><div><div class="panel-label" id="radarTitle">SONAR MONITOR</div><div class="radar-data"><span id="radarDepth">DEPTH : UNKNOWN</span><span id="radarSignal">SIGNAL : 02 DETECTED</span><span class="gold" id="radarState">STATUS : STABLE</span></div></div></div>
+    <div class="nav-title" id="navTitle">ARCHIVE DIRECTORY</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-note" id="sideNote">CURRENT COORDINATES<br><span class="blue">34° / 03' / 05"</span><br>NO SIGNAL IS EVER LOST.</div>
+   </aside>
+   <main class="content"><div class="content-head"><div><h2 class="content-title" id="pageTitle" tabindex="-1">OBSERVATION LOG</h2><div class="content-sub" id="pageSub">00 / CURRENT STATUS</div></div><div class="tag" id="pageTag">LIVE FEED</div></div><div id="pageContent"></div></main>
+  </div>
+  <footer class="footer"><span id="footerLeft">THE TWILIGHT ARCHIVE © TAPE 0305</span><span id="footerRight">SIGNAL STABLE · <button id="backButton">EJECT TAPE / RETURN HOME ↗</button></span></footer>
+ </div>
+</section>
+<script src="config-utils.js"></script>
+<script>
+const DEFAULT_CONFIG={"theme":{"deep":"#071521","blue":"#A5D4FA","gold":"#FAEDA5","paper":"#E4EDF0","muted":"#8097A6"},"cover":{"kicker":"DEEP SEA OBSERVATION STATION","title":"THE TWILIGHT ARCHIVE","subtitle":"황 혼 기 록 · TAPE NO. 0305","label":"● REC\nDEEP SEA / CAM 01","time":"03:05:25","caption":"ARCHIVE SUBJECT : TWILIGHT / DEEP SEA","signal":"SIGNAL FOUND","button":"PLAY ARCHIVE","note":"SOME MEMORIES NEVER REACH THE SURFACE.","image":"","memories":[{"image":"","caption":"FRAME 01 / THE LAST LIGHT","subcaption":"황혼이 수면에 걸리던 순간"},{"image":"","caption":"FRAME 02 / BLUE AFTERIMAGE","subcaption":"여름의 파편처럼 남은 기억"},{"image":"","caption":"FRAME 03 / SIGNAL LOST","subcaption":"닿지 못한 말과 오래된 파동"},{"image":"","caption":"FRAME 04 / STILL HERE","subcaption":"끝내 사라지지 않은 두 개의 신호"},{"image":"","caption":"FRAME 05 / ARCHIVE OPEN","subcaption":"황혼기록을 재생합니다"}]},"header":{"brand":"THE TWILIGHT ARCHIVE","tagline":"DEEP SEA OBSERVATION SYSTEM","status":"● SYSTEM ONLINE","tape":"TAPE NO. 0305","radarTitle":"SONAR MONITOR","depth":"DEPTH : UNKNOWN","signal":"SIGNAL : 02 DETECTED","state":"STATUS : STABLE","navTitle":"ARCHIVE DIRECTORY","sideNote":"CURRENT COORDINATES\n34° / 03' / 05\"\nNO SIGNAL IS EVER LOST.","footer":"THE TWILIGHT ARCHIVE © TAPE 0305"},"pages":[{"id":"home","nav":"OVERVIEW","title":"OBSERVATION LOG","sub":"00 / CURRENT STATUS","tag":"LIVE FEED","type":"home","eyebrow":"ARCHIVE CONNECTION : ACTIVE","heading":"THE TWILIGHT ARCHIVE","description":"수면에 닿지 못한 빛과, 끝내 사라지지 않은 두 사람의 기록.","image":"","blockTitle":"SIGNAL DETECTED","blockText":"두 개의 신호가 심해에서 감지되었습니다. 기록을 선택해 관측을 시작하세요.","blockTitle2":"RECENT RECORD","blockText2":"오래된 테이프 안에는 아직 열람하지 않은 장면이 남아 있습니다."},{"id":"subjects","nav":"SUBJECT FILE","title":"SUBJECT FILE","sub":"01 / OBSERVED SUBJECTS","tag":"2 SIGNALS","type":"subjects","items":[{"eyebrow":"SUBJECT 001 / SIGNAL GOLD","title":"HAN JAEJUN","subtitle":"CODENAME : TWILIGHT","description":"황혼. 수평선 위에 마지막까지 남아 있는 빛.","image":""},{"eyebrow":"SUBJECT 002 / SIGNAL BLUE","title":"HAN DOJUN","subtitle":"CODENAME : DEEP SEA","description":"심해. 빛이 닿지 않는 곳에서 조용히 이어지는 파동.","image":""}]},{"id":"relationship","nav":"RELATION LOG","title":"RELATIONSHIP LOG","sub":"02 / CHRONOLOGICAL RECORD","tag":"TIMELINE","type":"timeline","items":[{"date":"RECORD 001 · FIRST SIGNAL","title":"첫 번째 신호","description":"두 사람의 이야기가 시작된 순간을 기록하는 공간."},{"date":"RECORD 002 · CONNECTION","title":"신호의 연결","description":"관계의 방향이 바뀌거나 서로를 새롭게 이해한 사건."},{"date":"RECORD 003 · ARCHIVE 0305","title":"기억할 날짜","description":"페어 기념일이나 중요한 사건을 시간순으로 정리하세요."}]},{"id":"memory","nav":"MEMORY ARCHIVE","title":"MEMORY ARCHIVE","sub":"03 / FRAGMENTS & QUOTES","tag":"STORED","type":"memory","quote":"같이 빠지자, 한도준.","items":[{"title":"TAPE 001 · FRAGMENT","description":"짧은 문장이나 대사 기록"},{"title":"TAPE 002 · AFTERIMAGE","description":"오래 남은 장면에 대한 기록"}]},{"id":"video","nav":"VIDEO LOG","title":"VIDEO LOG","sub":"04 / VISUAL RECORDINGS","tag":"PLAYBACK","type":"gallery","description":"사진을 넣고 싶은 자리를 비워 두었습니다. 관리자 페이지에서 이미지를 업로드하세요.","items":[{"title":"V-001 / TWILIGHT FRAME","description":"황혼의 빛이 남은 장면","image":""},{"title":"V-002 / DEEP SEA FRAME","description":"심해에 잠긴 장면","image":""}]},{"id":"links","nav":"CONNECTIONS","title":"CONNECTIONS","sub":"05 / EXTERNAL TRANSMISSION","tag":"LINK PORT","type":"links","description":"다른 사이트와 계정으로 연결되는 출구입니다.","items":[{"title":"SOCIAL / SNS","url":"#","description":"소셜 계정"},{"title":"BLOG / PERSONAL LOG","url":"#","description":"개인 블로그"},{"title":"CREATION / WORKS","url":"#","description":"창작물 모음"}]}]};
+let config=JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function nl(s){return escapeHTML(s).replace(/\n/g,"<br>")}
+function applyTheme(){let t=config.theme||{};let r=document.documentElement;[['deep','--deep'],['blue','--blue'],['gold','--gold'],['paper','--paper'],['muted','--muted']].forEach(([k,v])=>{if(t[k])r.style.setProperty(v,t[k])})}
+function applyCover(){const c=config.cover||{};const map={coverKicker:c.kicker,coverTitle:c.title,coverSubtitle:c.subtitle,coverLabel:c.label,coverTime:c.time,coverCaption:c.caption,coverSignal:c.signal,enterLabel:c.button,coverNote:c.note};Object.entries(map).forEach(([id,val])=>{let el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=nl(val)});let screen=document.getElementById('coverScreen');if(c.image){screen.classList.add('has-image');screen.style.setProperty('--cover-image',`url("${c.image}")`);screen.style.backgroundImage=`linear-gradient(#06152122,#06152122),url("${c.image}")`}else{screen.classList.remove('has-image');screen.style.backgroundImage=''};const first=(c.memories||[])[0];if(first){document.getElementById('reelLabel').textContent=first.label||'MEMORY FRAME';setReelFrame(first,false)}} 
+function setReelFrame(frame,active=true){
+ const reel=document.getElementById('memoryReel'), placeholder=document.getElementById('reelPlaceholder');
+ document.getElementById('reelLabel').textContent=frame.caption||frame.label||'UNTITLED MEMORY';
+ reel.querySelectorAll('img').forEach(img=>img.remove());
+ let sub=reel.querySelector('.reel-subcaption');
+ if(!sub){sub=document.createElement('div');sub.className='reel-subcaption';reel.appendChild(sub)}
+ sub.textContent=frame.subcaption||''; placeholder.textContent=''; placeholder.style.display='grid';
+ const src=ArchiveConfig.image(frame.image || config.cover.image);
+ if(src){const img=new Image();img.alt=frame.subcaption||frame.caption||'회상 장면';img.onload=()=>{placeholder.style.display='none'};img.onerror=()=>{img.remove();placeholder.style.display='grid'};img.src=src;reel.insertBefore(img,reel.firstChild)}
+ reel.classList.toggle('active',active);
+ reel.classList.remove('scene-change');void reel.offsetWidth;reel.classList.add('scene-change');
+}
+let playbackTimer=null,playbackActive=false,frameIndex=0,clockTimer=null;
+function stopPlayback(){clearTimeout(playbackTimer);clearInterval(clockTimer);playbackTimer=null;clockTimer=null;playbackActive=false;document.getElementById('coverScreen').classList.remove('playing')}
+function enterArchive(){
+ stopPlayback();document.getElementById('entrance').classList.add('hidden');
+ document.getElementById('archive').classList.remove('hidden');
+ document.getElementById('pageTitle').focus({preventScroll:true});window.scrollTo(0,0);
+}
+function playMemoryReel(){
+ stopPlayback();
+ const frames=(config.cover.memories||[]).filter(f=>f&&(f.image||f.caption||f.label||f.subcaption));
+ if(!frames.length){enterArchive();return}
+ playbackActive=true;frameIndex=0;
+ const screen=document.getElementById('coverScreen');screen.classList.add('playing');
+ document.getElementById('coverPlayText').textContent='▶ PLAY';
+ const begun=Date.now();
+ const clock=()=>{const seconds=Math.floor((Date.now()-begun)/1000);document.getElementById('elapsed').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`};
+ clock();clockTimer=setInterval(clock,250);
+ const tick=()=>{
+  if(!playbackActive)return;
+  const frame=frames[frameIndex];setReelFrame(frame,true);frameIndex++;
+  document.getElementById('coverSignal').textContent=`${String(frameIndex).padStart(2,'0')} / ${String(frames.length).padStart(2,'0')} · MEMORY REEL`;
+  document.getElementById('reelProgress').style.width=`${frameIndex/frames.length*100}%`;
+  const duration=Math.min(15000,Math.max(1000,Number(frame.durationMs)||Number(config.cover.durationMs)||3200));
+  playbackTimer=setTimeout(frameIndex>=frames.length?enterArchive:tick,duration);
+ };tick();
+}
+function applyHeader(){const h=config.header||{};const map={siteBrand:h.brand,siteTagline:h.tagline,systemStatus:h.status,systemTape:h.tape,radarTitle:h.radarTitle,radarDepth:h.depth,radarSignal:h.signal,radarState:h.state,navTitle:h.navTitle,sideNote:h.sideNote,footerLeft:h.footer};Object.entries(map).forEach(([id,val])=>{let el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=nl(val)})}
+function renderNav(active){let nav=document.getElementById('nav');nav.innerHTML=(config.pages||[]).map((p,i)=>`<button data-page="${escapeHTML(p.id)}" class="${p.id===active?'active':''}"><span>${String(i).padStart(2,'0')} / ${escapeHTML(p.nav||p.title)}</span><span class="num">↗</span></button>`).join('');nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)))}
+function cssImage(src){return escapeHTML('url('+JSON.stringify(ArchiveConfig.image(src))+')')}
+function imgSlot(src,label,cls=''){return `<div class="image-slot ${src?'has-image':''} ${cls}" ${src?`style="background-image:linear-gradient(#06131d22,#06131d22),${cssImage(src)}"`:''}>${src?'':`<div class="slot-text"><b>IMAGE SLOT</b>${escapeHTML(label||'UPLOAD IMAGE IN ADMIN')}</div>`}</div>`}
+function renderPage(p){
+ if(p.type==='home')return `<section class="card home-hero ${p.image?'has-image':''}" ${p.image?`style="--hero-image:${cssImage(p.image)}"`:''}><div class="eyebrow">${escapeHTML(p.eyebrow||'ARCHIVE CONNECTION : ACTIVE')}</div><h2>${escapeHTML(p.heading||p.title)}</h2><div class="description">${nl(p.description||'')}</div></section><div class="grid2"><section class="card"><h3>${escapeHTML(p.blockTitle||'SIGNAL DETECTED')}</h3><p>${nl(p.blockText||'')}</p><button class="action" data-goto="subjects">OPEN SUBJECT FILE ↗</button></section><section class="card"><h3>${escapeHTML(p.blockTitle2||'RECENT RECORD')}</h3><p>${nl(p.blockText2||'')}</p><button class="action" data-goto="memory">ACCESS MEMORY ↗</button></section></div>`;
+ if(p.type==='subjects')return `<div class="grid2">${(p.items||[]).map((x,i)=>`<section class="card subject ${i?'blue-subject':''}"><div class="subject-image" style="${x.image?`background-image:linear-gradient(#06131d55,#06131d55),${cssImage(x.image)}`:''}">${x.image?'':`<span>SUBJECT IMAGE / EMPTY SLOT</span>`}</div><div class="eyebrow">${escapeHTML(x.eyebrow||'SUBJECT FILE')}</div><h3>${escapeHTML(x.title||'UNTITLED')}</h3><div class="micro">${escapeHTML(x.subtitle||'')}</div><p>${nl(x.description||'')}</p></section>`).join('')}</div>`;
+ if(p.type==='timeline')return `<section class="card"><h3>RECORDED EVENTS</h3><div class="timeline">${(p.items||[]).map(x=>`<div class="event"><div class="date">${escapeHTML(x.date||'UNDATED RECORD')}</div><h3>${escapeHTML(x.title||'Untitled')}</h3><p>${nl(x.description||'')}</p></div>`).join('')}</div></section>`;
+ if(p.type==='memory')return `${p.quote?`<section class="card"><div class="eyebrow">FRAGMENT / PRESERVED LINE</div><div class="quote">${nl(p.quote)}</div></section>`:''}<div class="grid2">${(p.items||[]).map(x=>`<article class="tape-card"><div class="tape-no">${escapeHTML(x.title||'UNTITLED TAPE')}</div><p>${nl(x.description||'')}</p>${x.image?`<img class="user-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="">`:''}</article>`).join('')}</div>`;
+ if(p.type==='gallery')return `<section class="card"><p>${nl(p.description||'')}</p></section><div class="grid2">${(p.items||[]).map(x=>`<article class="tape-card">${imgSlot(x.image,x.title)}<h3>${escapeHTML(x.title||'UNTITLED FRAME')}</h3><p>${nl(x.description||'')}</p></article>`).join('')}</div>`;
+ if(p.type==='links')return `<section class="card"><h3>OUTGOING SIGNALS</h3><p>${nl(p.description||'')}</p>${(p.items||[]).map(x=>`<p><a class="action" href="${escapeHTML(ArchiveConfig.link(x.url))}" ${x.url&&x.url!=='#'?'target="_blank" rel="noopener"':'onclick="return false"'}>${escapeHTML(x.title||'LINK')} ↗</a> <span class="micro">${escapeHTML(x.description||'')}</span></p>`).join('')}</section>`;
+ return `<section class="card"><h3>${escapeHTML(p.title||'ARCHIVE')}</h3><p>${nl(p.description||'')}</p>${p.image?`<img class="user-image" src="${escapeHTML(ArchiveConfig.image(p.image))}" alt="">`:imgSlot('',p.title)}</section>`;
+}
+function showPage(id){let p=(config.pages||[]).find(x=>x.id===id)||config.pages[0];if(!p)return;document.getElementById('pageTitle').textContent=p.title||p.nav;document.getElementById('pageSub').textContent=p.sub||'';document.getElementById('pageTag').textContent=p.tag||'ARCHIVE';document.getElementById('pageContent').innerHTML=renderPage(p);renderNav(p.id);document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));window.scrollTo({top:0,behavior:'smooth'})}
+function renderAll(){applyTheme();applyCover();applyHeader();showPage(config.pages?.[0]?.id||'home')}
+document.getElementById('backButton').addEventListener('click',()=>{
+ document.getElementById('archive').classList.add('hidden');document.getElementById('entrance').classList.remove('hidden');window.scrollTo(0,0);playMemoryReel();
+});
+ArchiveConfig.load(DEFAULT_CONFIG).then(c=>{config=c;applyTheme();applyCover();applyHeader();showPage(config.pages[0]?.id);playMemoryReel()});
+</script>
+</body></html>
