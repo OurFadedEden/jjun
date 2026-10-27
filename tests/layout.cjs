@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});try{
+const page=await browser.newPage({viewport:{width:1400,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));const base='http://127.0.0.1:8000/';await page.goto(base);await page.waitForSelector('#coverScreen.playing');let original;
+for(const width of [1400,760,390,320]){await page.setViewportSize({width,height:1000});const r=await page.locator('.vhs-shell').boundingBox();const ratio=r.width/r.height;if(!original)original=ratio;assert.ok(Math.abs(ratio-original)<.04,`${width}: ${ratio} vs ${original}`);const screen=await page.locator('#coverScreen').boundingBox();assert.ok(Math.abs(screen.width/screen.height-4/3)<.02);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
+await page.locator('#skipReel').click();await page.setViewportSize({width:1400,height:1000});await page.screenshot({path:'artifacts/album-desktop.png',fullPage:true,animations:'disabled'});
+await page.setViewportSize({width:390,height:844});await page.screenshot({path:'artifacts/album-mobile.png',fullPage:true,animations:'disabled'});
+await page.goto(base+'admin.html');await page.waitForSelector('#memorySceneFields .item-editor');
+const photo=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=80;c.height=60;const x=c.getContext('2d');x.fillStyle='#dd9858';x.fillRect(0,0,80,30);x.fillStyle='#a9ddf4';x.fillRect(0,30,80,30);return c.toDataURL()});
+await page.evaluate(photo=>{const c=JSON.parse(document.querySelector('#jsonBox').value);c.cover.memories=[{image:photo,caption:'PHOTO TEST'}];c.cover.durationMs=15000;localStorage.setItem('twilightArchiveConfig',JSON.stringify(c))},photo);
+await page.goto(base);await page.waitForSelector('#photoAtmosphere.visible');assert.equal(await page.locator('#memoryReel img').evaluate(x=>getComputedStyle(x).filter.includes('blur')),false);
+await page.goto(base+'admin.html');await page.waitForSelector('#memorySceneFields .item-editor');await page.locator('#ambientBlur').uncheck();page.on('dialog',d=>d.accept());await page.locator('#saveLocal').click();await page.goto(base);await page.waitForSelector('#coverScreen.playing');assert.equal(await page.locator('#photoAtmosphere').evaluate(x=>x.classList.contains('visible')),false);
+assert.deepEqual(errors,[]);console.log('PASS: TV proportions at 1400/760/390/320px, 4:3 screen, album screenshots, photo-only ambient blur and saved disable toggle');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exit(1)});
