@@ -6,6 +6,7 @@ try{
  const page=await browser.newPage({viewport:{width:1360,height:950}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.clock.install({time:new Date('2026-01-01T00:00:00Z')});await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));await page.goto('http://127.0.0.1:8000/');await page.waitForSelector('#coverScreen.playing');
 
+ assert.equal(await page.locator('.tape-controls button').allTextContents().then(x=>x.join('').trim()),'');
  await page.screenshot({path:'artifacts/transport-desktop.png'});
  await page.locator('#fastForward').click();assert.equal(await page.locator('#fastForward').getAttribute('aria-pressed'),'true');
  await page.clock.runFor(900);assert.match(await page.locator('#coverSignal').textContent(),/02 \/ 05/);
@@ -23,7 +24,7 @@ try{
   await page.locator('#skipReel').click();
  }
  await page.emulateMedia({reducedMotion:'reduce'});await page.locator('#backButton').click();
- assert.equal(await page.locator('.tape-window i').first().evaluate(el=>getComputedStyle(el).animationName),'none');
+ assert.equal(await page.locator('.reel-placeholder').first().evaluate(el=>getComputedStyle(el).animationName),'none');
  await page.locator('#fastForward').click();await page.clock.runFor(4100);assert.equal(await page.locator('#archive').isVisible(),true);
  assert.deepEqual(errors,[]);console.log('PASS: 4x timing, toggle, keyboard, skip timer cleanup, replay reset, fast auto-entry, mobile right controls, reduced motion');
 }finally{await browser.close()}

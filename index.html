@@ -220,17 +220,15 @@
    </div>
   </div>
   <aside class="tape-controls" aria-label="테이프 재생 조작">
-   <div class="hardware-brand">TWA<span>PORTABLE COLOR TV</span></div>
-   <div class="power-lamp"><i></i> POWER</div>
-   <button type="button" id="fastForward" class="transport-lever" aria-label="4배 빠른감기" aria-pressed="false" disabled>
-    <span class="lever-track" aria-hidden="true"><span class="lever-grip"></span></span>
-    <span class="control-label">FF ▸▸<small>빠른감기</small></span>
+   <button type="button" id="fastForward" class="tv-dial" aria-label="4배 빠른감기" aria-pressed="false" disabled>
+    <span class="dial-ring" aria-hidden="true"><span class="dial-face"><span class="dial-handle"></span></span></span>
    </button>
-   <div id="speedStatus" class="speed-status" role="status">NORMAL · 1×</div>
-   <button type="button" id="skipReel" class="transport-skip" disabled><span aria-hidden="true">▸▸│</span><span>건너뛰기</span></button>
-   <div class="tape-window" aria-hidden="true"><i></i><span>―</span><i></i></div>
+   <button type="button" id="skipReel" class="tv-dial skip-dial" aria-label="건너뛰기" disabled>
+    <span class="dial-ring" aria-hidden="true"><span class="dial-face"><span class="dial-handle"></span></span></span>
+   </button>
+   <div id="speedStatus" class="sr-only" role="status">정상 속도</div>
    <div class="speaker-grille" aria-hidden="true"></div>
-   <div class="hardware-model">0305 / STEREO</div>
+   <div class="tv-trim" aria-hidden="true"><i></i><i></i></div>
   </aside></div>
    <div class="reel-progress" aria-hidden="true"><span id="reelProgress"></span></div><div class="tape-caption"><span class="micro" id="coverCaption">ARCHIVE SUBJECT : TWILIGHT / DEEP SEA</span><span class="micro gold" id="coverSignal">SIGNAL FOUND</span></div>
   </div>
@@ -279,7 +277,7 @@ function updateTransport(){
  const fast=playbackRate===4;
  document.getElementById('fastForward').setAttribute('aria-pressed',String(fast));
  document.getElementById('speedStatus').textContent=fast?'FAST FWD · 4×':'NORMAL · 1×';
- document.getElementById('coverPlayText').textContent=fast?'▶▶ FF · 4×':'▶ PLAY';
+ document.getElementById('coverPlayText').textContent=fast?'▶▶':'▶ PLAY';
  document.getElementById('entrance').classList.toggle('fast-forward',fast);
  for(const id of ['fastForward','skipReel'])document.getElementById(id).disabled=!playbackActive;
 }
