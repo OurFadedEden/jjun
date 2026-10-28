@@ -118,7 +118,7 @@ function bindLinkSonar(p){
  const contact=document.getElementById('linkContact');
  function select(index){
   selected=index;document.querySelectorAll('[data-contact]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.contact===index)));
-  const x=items[index];if(x._sealed){contact.innerHTML=ArchiveLocks.card(index);return}const url=ArchiveConfig.link(x.url);
+  const x=items[index];if(x._sealed){contact.innerHTML=ArchiveLocks.card(index);if(matchMedia('(max-width:1000px)').matches)contact.scrollIntoView({block:'nearest',behavior:'instant'});return}const url=ArchiveConfig.link(x.url);
   contact.innerHTML=`<div class="contact-heading"><span class="contact-pulse" aria-hidden="true"></span><span>CONTACT / ${String(index+1).padStart(2,'0')}</span></div>${x.image?`<img class="contact-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="${escapeHTML(x.title||'')}">`:''}<h3>${escapeHTML(x.title||'LINK')}</h3><p>${nl(x.description||'')}</p>${url!=='#'?`<a class="contact-open" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(config.hud.linkOpen)} <span aria-hidden="true">↗</span></a>`:`<span class="contact-unavailable">${escapeHTML(config.hud.linkUnavailable)}</span>`}`;
   if(matchMedia('(max-width:1000px)').matches)contact.scrollIntoView({block:'nearest',behavior:'instant'});
  }
@@ -149,13 +149,14 @@ function bindPromptCopy(p){
 function protectedPhoto(target){return target instanceof Element&&target.closest('#archive img,#entrance img,.image-slot,.subject-image,.vhs-screen')}
 for(const type of ['contextmenu','dragstart'])document.addEventListener(type,event=>{if(config.decor.protectImages&&protectedPhoto(event.target))event.preventDefault()});
 
-document.addEventListener('click',async event=>{
- const button=event.target.closest('[data-unlock-item],[data-unlock-page]');if(!button)return;
+document.addEventListener('submit',async event=>{
+ const form=event.target.closest('[data-unlock-item],[data-unlock-page]');if(!form)return;event.preventDefault();
  const p=config.pages.find(x=>x.id===document.getElementById('pageContent').dataset.pageId);if(!p)return;
- const page=button.hasAttribute('data-unlock-page'),index=+button.dataset.unlockItem,target=page?p:p.items[index];
- const value=await ArchiveLocks.unlock(target,page?ArchiveLocks.pageKey(p):ArchiveLocks.itemKey(target));if(!value)return;
- if(page)config.pages[config.pages.indexOf(p)]=value;else p.items[index]=value;showPage(p.id);
+ const page=form.hasAttribute('data-unlock-page'),index=+form.dataset.unlockItem,target=page?p:p.items[index];
+ const value=await ArchiveLocks.unlockInline(target,page?ArchiveLocks.pageKey(p):ArchiveLocks.itemKey(target),form);if(!value)return;
+ if(page)config.pages[config.pages.indexOf(p)]=value;else p.items[index]=value;showPage(p.id);document.getElementById('pageTitle').focus({preventScroll:true});
 });
+
 function renderPromptContent(raw){
  const text=String(raw||'');if(!text.includes('```')&&!/^\[.+\]$/m.test(text))return `<pre class="prompt-text" tabindex="0">${escapeHTML(text)}</pre>`;
  const lines=text.replace(/\r/g,'').split('\n');let html='',prose=[];
