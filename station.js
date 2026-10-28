@@ -82,6 +82,7 @@ function setArchiveMenu(open,restoreFocus=false){
  document.querySelector('#archive .content').inert=open;
  document.querySelector('#archive .topbar').inert=open;
  document.querySelector('#archive .footer').inert=open;
+ document.getElementById('widgetShelf').inert=open;
  if(open){document.getElementById('archiveMenuClose').focus();requestAnimationFrame(()=>{if(document.body.classList.contains('menu-open')&&!archiveSidebar.contains(document.activeElement))document.getElementById('archiveMenuClose').focus()})}else if(restoreFocus&&sidebarMedia.matches)menuToggle.focus();
 }
 menuToggle.onclick=()=>setArchiveMenu(true);
@@ -99,3 +100,13 @@ document.addEventListener('keydown',e=>{
  }
 });
 closeArchiveMenu(false);
+
+const floatingShelf=document.getElementById('widgetShelf');
+floatingShelf.addEventListener('keydown',event=>{if(event.key==='Escape'){floatingShelf.open=false;document.getElementById('widgetSummary').focus()}});
+document.addEventListener('pointerdown',event=>{if(floatingShelf.open&&!floatingShelf.contains(event.target))floatingShelf.open=false});
+// A first touch reveals the link label; a second touch follows the link.
+document.addEventListener('click',event=>{
+ const banner=event.target.closest('.connection-banner');
+ if(!banner||event.detail===0||!matchMedia('(hover:none)').matches)return;
+ if(!banner.classList.contains('is-revealed')){event.preventDefault();document.querySelectorAll('.connection-banner.is-revealed').forEach(el=>el.classList.remove('is-revealed'));banner.classList.add('is-revealed')}
+});
