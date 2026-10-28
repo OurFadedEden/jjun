@@ -2,8 +2,28 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#F1F5F2">
 <title>THE TWILIGHT ARCHIVE · 황혼기록</title>
+<meta name="description" content="황혼과 심해 사이, 한재준과 한도준의 관계와 기억을 기록합니다.">
+<link rel="canonical" href="https://jeste.naru.pub/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="황혼기록">
+<meta property="og:title" content="황혼기록 · THE TWILIGHT ARCHIVE">
+<meta property="og:description" content="황혼과 심해 사이, 한재준과 한도준의 관계와 기억을 기록합니다.">
+<meta property="og:url" content="https://jeste.naru.pub/">
+<meta property="og:image" content="https://jeste.naru.pub/assets/share-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="황혼기록 — 크림빛과 하늘빛 소나 위에 기록된 두 사람의 기억">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="황혼기록 · THE TWILIGHT ARCHIVE">
+<meta name="twitter:description" content="황혼과 심해 사이, 한재준과 한도준의 관계와 기억을 기록합니다.">
+<meta name="twitter:image" content="https://jeste.naru.pub/assets/share-card.png">
+<meta name="twitter:image:alt" content="황혼기록 — 크림빛과 하늘빛 소나 위에 기록된 두 사람의 기억">
+
 <style>
 :root{--deep:#071521;--ink:#0b1c29;--blue:#a5d4fa;--gold:#faeda5;--paper:#e4edf0;--muted:#8097a6;--line:#a5d4fa35;--serif:Georgia,'Times New Roman',serif;--mono:ui-monospace,Consolas,monospace}
 *{box-sizing:border-box}html{background:var(--deep);scroll-behavior:smooth}body{margin:0;background:var(--deep);color:var(--paper);font:14px/1.7 Arial,'Apple SD Gothic Neo',sans-serif;min-height:100vh}button,a{font:inherit}button{cursor:pointer}a{color:var(--blue)}.hidden{display:none!important}.mono{font-family:var(--mono);letter-spacing:.08em}.micro{font:10px/1.7 var(--mono);letter-spacing:.1em;color:var(--muted)}.gold{color:var(--gold)}.blue{color:var(--blue)}
@@ -202,9 +222,9 @@
 .memory-reel.active .reel-label{bottom:27%}
 @media(max-width:680px){.reel-subcaption{bottom:12%;font-size:10px}.memory-reel.active .reel-label{bottom:25%}}
 </style>
-<link rel="stylesheet" href="refinements.css?v=20261028-finish">
-<link rel="stylesheet" href="daylight.css?v=20261028-finish">
-<link rel="stylesheet" href="sonar.css?v=20261028-finish">
+<link rel="stylesheet" href="refinements.css?v=20261028-prompt">
+<link rel="stylesheet" href="daylight.css?v=20261028-prompt">
+<link rel="stylesheet" href="sonar.css?v=20261028-prompt">
 </head>
 <body>
 <section id="entrance">
@@ -256,17 +276,18 @@
   <footer class="footer"><span id="footerLeft">THE TWILIGHT ARCHIVE © TAPE 0305</span><span id="footerRight">SIGNAL STABLE · <button id="backButton">EJECT TAPE / RETURN HOME ↗</button></span></footer>
  </div>
 </section>
-<details class="widget-shelf" id="widgetShelf"><summary id="widgetSummary">관측 위젯</summary><div class="widget-grid" id="floatingWidgetPanel" role="region" aria-labelledby="widgetSummary"><section id="messageWidget"></section></div></details><script src="config-utils.js?v=20261028-finish"></script>
-<script src="cursor.js?v=20261028-finish"></script>
-<script src="station.js?v=20261028-finish"></script>
+<details class="widget-shelf" id="widgetShelf"><summary id="widgetSummary">관측 위젯</summary><div class="widget-grid" id="floatingWidgetPanel" role="region" aria-labelledby="widgetSummary"><section id="messageWidget"></section></div></details><script src="config-utils.js?v=20261028-prompt"></script>
+<script src="cursor.js?v=20261028-prompt"></script>
+<script src="station.js?v=20261028-prompt"></script>
 <script>
 const DEFAULT_CONFIG={"theme":{"deep":"#F1F5F2","blue":"#A5D4FA","gold":"#FAEDA5","paper":"#243C50","muted":"#536A78"},"cover":{"kicker":"DEEP SEA OBSERVATION STATION","title":"THE TWILIGHT ARCHIVE","subtitle":"황 혼 기 록 · TAPE NO. 0305","label":"● REC\nDEEP SEA / CAM 01","time":"03:05:25","caption":"ARCHIVE SUBJECT : TWILIGHT / DEEP SEA","signal":"SIGNAL FOUND","button":"PLAY ARCHIVE","note":"SOME MEMORIES NEVER REACH THE SURFACE.","image":"","memories":[{"image":"","caption":"FRAME 01 / THE LAST LIGHT","subcaption":"황혼이 수면에 걸리던 순간"},{"image":"","caption":"FRAME 02 / BLUE AFTERIMAGE","subcaption":"여름의 파편처럼 남은 기억"},{"image":"","caption":"FRAME 03 / SIGNAL LOST","subcaption":"닿지 못한 말과 오래된 파동"},{"image":"","caption":"FRAME 04 / STILL HERE","subcaption":"끝내 사라지지 않은 두 개의 신호"},{"image":"","caption":"FRAME 05 / ARCHIVE OPEN","subcaption":"황혼기록을 재생합니다"}]},"header":{"brand":"THE TWILIGHT ARCHIVE","tagline":"DEEP SEA OBSERVATION SYSTEM","status":"● SYSTEM ONLINE","tape":"TAPE NO. 0305","radarTitle":"SONAR MONITOR","depth":"DEPTH : UNKNOWN","signal":"SIGNAL : 02 DETECTED","state":"STATUS : STABLE","navTitle":"ARCHIVE DIRECTORY","sideNote":"CURRENT COORDINATES\n34° / 03' / 05\"\nNO SIGNAL IS EVER LOST.","footer":"THE TWILIGHT ARCHIVE © TAPE 0305"},"pages":[{"id":"home","nav":"OVERVIEW","title":"OBSERVATION LOG","sub":"00 / CURRENT STATUS","tag":"LIVE FEED","type":"home","eyebrow":"ARCHIVE CONNECTION : ACTIVE","heading":"THE TWILIGHT ARCHIVE","description":"수면에 닿지 못한 빛과, 끝내 사라지지 않은 두 사람의 기록.","image":"","blockTitle":"SIGNAL DETECTED","blockText":"두 개의 신호가 심해에서 감지되었습니다. 기록을 선택해 관측을 시작하세요.","blockTitle2":"RECENT RECORD","blockText2":"오래된 테이프 안에는 아직 열람하지 않은 장면이 남아 있습니다."},{"id":"subjects","nav":"SUBJECT FILE","title":"SUBJECT FILE","sub":"01 / OBSERVED SUBJECTS","tag":"2 SIGNALS","type":"subjects","items":[{"eyebrow":"SUBJECT 001 / SIGNAL GOLD","title":"HAN JAEJUN","subtitle":"CODENAME : TWILIGHT","description":"황혼. 수평선 위에 마지막까지 남아 있는 빛.","image":""},{"eyebrow":"SUBJECT 002 / SIGNAL BLUE","title":"HAN DOJUN","subtitle":"CODENAME : DEEP SEA","description":"심해. 빛이 닿지 않는 곳에서 조용히 이어지는 파동.","image":""}]},{"id":"relationship","nav":"RELATION LOG","title":"RELATIONSHIP LOG","sub":"02 / CHRONOLOGICAL RECORD","tag":"TIMELINE","type":"timeline","items":[{"date":"RECORD 001 · FIRST SIGNAL","title":"첫 번째 신호","description":"두 사람의 이야기가 시작된 순간을 기록하는 공간."},{"date":"RECORD 002 · CONNECTION","title":"신호의 연결","description":"관계의 방향이 바뀌거나 서로를 새롭게 이해한 사건."},{"date":"RECORD 003 · ARCHIVE 0305","title":"기억할 날짜","description":"페어 기념일이나 중요한 사건을 시간순으로 정리하세요."}]},{"id":"memory","nav":"MEMORY ARCHIVE","title":"MEMORY ARCHIVE","sub":"03 / FRAGMENTS & QUOTES","tag":"STORED","type":"memory","quote":"같이 빠지자, 한도준.","items":[{"title":"TAPE 001 · FRAGMENT","description":"짧은 문장이나 대사 기록"},{"title":"TAPE 002 · AFTERIMAGE","description":"오래 남은 장면에 대한 기록"}]},{"id":"video","nav":"VIDEO LOG","title":"VIDEO LOG","sub":"04 / VISUAL RECORDINGS","tag":"PLAYBACK","type":"gallery","description":"사진을 넣고 싶은 자리를 비워 두었습니다. 관리자 페이지에서 이미지를 업로드하세요.","items":[{"title":"V-001 / TWILIGHT FRAME","description":"황혼의 빛이 남은 장면","image":""},{"title":"V-002 / DEEP SEA FRAME","description":"심해에 잠긴 장면","image":""}]},{"id":"links","nav":"CONNECTIONS","title":"CONNECTIONS","sub":"05 / EXTERNAL TRANSMISSION","tag":"LINK PORT","type":"links","description":"다른 사이트와 계정으로 연결되는 출구입니다.","items":[{"title":"SOCIAL / SNS","url":"#","description":"소셜 계정"},{"title":"BLOG / PERSONAL LOG","url":"#","description":"개인 블로그"},{"title":"CREATION / WORKS","url":"#","description":"창작물 모음"}]}]};
+DEFAULT_CONFIG.pages.push({"id": "prompts", "nav": "PROMPT ARCHIVE", "title": "PROMPT ARCHIVE", "sub": "06 / SAVED PROMPTS", "tag": "COPY & KEEP", "type": "prompts", "description": "사진과 함께 보관하는 프롬프트 기록. 필요한 문장을 복사해 사용하세요.", "image": "", "items": [{"title": "새 프롬프트", "description": "이 프롬프트의 용도와 사용 방법을 적어 주세요.", "prompt": "여기에 보관할 프롬프트를 입력하세요.", "image": ""}]});
 Object.assign(DEFAULT_CONFIG,structuredClone(ArchiveConfig.featureDefaults));
 let config=JSON.parse(JSON.stringify(DEFAULT_CONFIG));
 function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function nl(s){return escapeHTML(s).replace(/\n/g,"<br>")}
 function applyTheme(){let t=config.theme||{};let r=document.documentElement;[['deep','--deep'],['blue','--blue'],['gold','--gold'],['paper','--paper'],['muted','--muted']].forEach(([k,v])=>{if(t[k])r.style.setProperty(v,t[k])})}
-function applyCover(){const c=config.cover||{};const map={coverKicker:c.kicker,coverTitle:c.title,coverSubtitle:c.subtitle,coverLabel:c.label,coverTime:c.time,coverCaption:c.caption,coverSignal:c.signal,enterLabel:c.button,coverNote:c.note};Object.entries(map).forEach(([id,val])=>{let el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=nl(val)});let screen=document.getElementById('coverScreen');if(c.image){screen.classList.add('has-image');screen.style.setProperty('--cover-image',`url("${c.image}")`);screen.style.backgroundImage=`linear-gradient(#06152122,#06152122),url("${c.image}")`}else{screen.classList.remove('has-image');screen.style.backgroundImage=''};const first=(c.memories||[])[0];if(first){document.getElementById('reelLabel').textContent=first.label||'MEMORY FRAME';setReelFrame(first,false)}} 
+function applyCover(){const c=config.cover||{};const map={coverKicker:c.kicker,coverTitle:c.title,coverSubtitle:c.subtitle,coverLabel:c.label,coverTime:c.time,coverCaption:c.caption,coverSignal:c.signal,enterLabel:c.button,coverNote:c.note};Object.entries(map).forEach(([id,val])=>{let el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=nl(val)});let screen=document.getElementById('coverScreen');if(c.image){screen.classList.add('has-image');screen.style.setProperty('--cover-image',`url(${JSON.stringify(ArchiveConfig.image(c.image))})`);screen.style.backgroundImage=`linear-gradient(#06152122,#06152122),url(${JSON.stringify(ArchiveConfig.image(c.image))})`}else{screen.classList.remove('has-image');screen.style.backgroundImage=''};const first=(c.memories||[])[0];if(first){document.getElementById('reelLabel').textContent=first.label||'MEMORY FRAME';setReelFrame(first,false)}}
 function setReelFrame(frame,active=true){
  const reel=document.getElementById('memoryReel'), placeholder=document.getElementById('reelPlaceholder');
  document.getElementById('reelLabel').textContent=frame.caption||frame.label||'UNTITLED MEMORY';
@@ -336,7 +357,7 @@ function renderNav(active){let nav=document.getElementById('nav');nav.innerHTML=
 function cssImage(src){return escapeHTML('url('+JSON.stringify(ArchiveConfig.image(src))+')')}
 function imgSlot(src,label,cls=''){return `<div class="image-slot ${src?'has-image':''} ${cls}" ${src?`style="background-image:linear-gradient(#06131d22,#06131d22),${cssImage(src)}"`:''}>${src?'':`<div class="slot-text"><b>${escapeHTML(config.hud.emptyImage)}</b>${escapeHTML(label||'UPLOAD IMAGE IN ADMIN')}</div>`}</div>`}
 function renderPage(p){
- const header=['memory','timeline','links','gallery'].includes(p.type)&&p.image?`<figure class="category-cover"><img src="${escapeHTML(ArchiveConfig.image(p.image))}" alt="${escapeHTML(p.title||'')}"><figcaption><span>${escapeHTML(p.sub||p.nav||'')}</span><strong>${escapeHTML(p.title||'')}</strong></figcaption></figure>`:'';
+ const header=['memory','timeline','links','gallery','prompts'].includes(p.type)&&p.image?`<figure class="category-cover"><img src="${escapeHTML(ArchiveConfig.image(p.image))}" alt="${escapeHTML(p.title||'')}"><figcaption><span>${escapeHTML(p.sub||p.nav||'')}</span><strong>${escapeHTML(p.title||'')}</strong></figcaption></figure>`:'';
  return header+renderPageBody(p);
 }
 function renderPageBody(p){
@@ -349,10 +370,11 @@ function renderPageBody(p){
  if(p.type==='timeline')return `<section class="dive-log"><div class="dive-heading"><span aria-hidden="true">↓</span><h3>${escapeHTML(config.hud.eventsTitle)}</h3></div>${p.description?`<p>${nl(p.description)}</p>`:''}<div class="dive-timeline">${(p.items||[]).map((x,i)=>`<article class="dive-event" style="--depth-tint:${Math.min(i*4,24)}%"><div class="dive-depth"><span>${escapeHTML(x.depth||String(i*100).padStart(3,'0')+' m')}</span><i aria-hidden="true"></i></div><div class="dive-record"><time>${escapeHTML(x.date||'UNDATED RECORD')}</time><h3>${escapeHTML(x.title||'Untitled')}</h3><p>${nl(x.description||'')}</p>${x.image?`<img class="user-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="${escapeHTML(x.title||'')}">`:''}</div></article>`).join('')}</div><div class="dive-end" aria-hidden="true">◇ ─ ─ ─ ∞</div></section>`;
  if(p.type==='memory')return `${p.quote?`<section class="card"><div class="eyebrow">${escapeHTML(config.hud.fragmentLabel)}</div><div class="quote">${nl(p.quote)}</div></section>`:''}<div class="grid2">${(p.items||[]).map(x=>`<article class="tape-card"><div class="tape-no">${escapeHTML(x.title||'UNTITLED TAPE')}</div><p>${nl(x.description||'')}</p>${x.image?`<img class="user-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="">`:''}</article>`).join('')}</div>`;
  if(p.type==='gallery')return `<section class="card"><p>${nl(p.description||'')}</p></section><div class="grid2">${(p.items||[]).map(x=>`<article class="tape-card">${imgSlot(x.image,x.title)}<h3>${escapeHTML(x.title||'UNTITLED FRAME')}</h3><p>${nl(x.description||'')}</p></article>`).join('')}</div>`;
+ if(p.type==='prompts')return `<p class="prompt-intro">${nl(p.description||'')}</p><div class="prompt-list">${(p.items||[]).map((x,i)=>`<article class="prompt-card">${x.image?`<img class="prompt-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="${escapeHTML(x.title||'')}" loading="lazy">`:''}<div class="prompt-heading"><span>${String(i+1).padStart(2,'0')} / PROMPT</span><button class="prompt-copy" type="button" data-copy-prompt="${i}" aria-label="${escapeHTML((x.title||'프롬프트')+' 복사')}">복사 ⧉</button></div><h3>${escapeHTML(x.title||'PROMPT')}</h3><p>${nl(x.description||'')}</p><pre class="prompt-text" tabindex="0">${escapeHTML(x.prompt||'')}</pre><span class="prompt-status" role="status"></span></article>`).join('')}</div>`;
  if(p.type==='links')return renderLinkSonar(p);
  return `<section class="card"><h3>${escapeHTML(p.title||'ARCHIVE')}</h3><p>${nl(p.description||'')}</p>${p.image?`<img class="user-image" src="${escapeHTML(ArchiveConfig.image(p.image))}" alt="">`:imgSlot('',p.title)}</section>`;
 }
-function showPage(id){let p=(config.pages||[]).find(x=>x.id===id)||config.pages[0];if(!p)return;document.getElementById('pageTitle').textContent=p.title||p.nav;document.getElementById('pageSub').textContent=p.sub||'';document.getElementById('pageTag').textContent=p.tag||'ARCHIVE';document.getElementById('pageContent').dataset.type=p.type;document.getElementById('pageContent').innerHTML=renderPage(p);bindLinkSonar(p);renderNav(p.id);document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));document.querySelector('.content').scrollTo({top:0,behavior:'instant'});if(document.body.classList.contains('menu-open')){closeArchiveMenu(false);document.getElementById('pageTitle').focus({preventScroll:true})}}
+function showPage(id){let p=(config.pages||[]).find(x=>x.id===id)||config.pages[0];if(!p)return;document.getElementById('pageTitle').textContent=p.title||p.nav;document.getElementById('pageSub').textContent=p.sub||'';document.getElementById('pageTag').textContent=p.tag||'ARCHIVE';document.getElementById('pageContent').dataset.type=p.type;document.getElementById('pageContent').innerHTML=renderPage(p);bindLinkSonar(p);bindPromptCopy(p);renderNav(p.id);document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));document.querySelector('.content').scrollTo({top:0,behavior:'instant'});if(document.body.classList.contains('menu-open')){closeArchiveMenu(false);document.getElementById('pageTitle').focus({preventScroll:true})}}
 document.getElementById('brandHome').onclick=()=>{showPage(config.pages.find(p=>p.type==='home')?.id||config.pages[0]?.id);document.getElementById('pageTitle').focus({preventScroll:true})};
 function renderAll(){applyTheme();applyCover();applyHeader();showPage(config.pages?.[0]?.id||'home')}
 document.getElementById('backButton').addEventListener('click',()=>{

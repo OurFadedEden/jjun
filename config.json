@@ -189,6 +189,24 @@
           "description": "창작물 모음"
         }
       ]
+    },
+    {
+      "id": "prompts",
+      "nav": "PROMPT ARCHIVE",
+      "title": "PROMPT ARCHIVE",
+      "sub": "06 / SAVED PROMPTS",
+      "tag": "COPY & KEEP",
+      "type": "prompts",
+      "description": "사진과 함께 보관하는 프롬프트 기록. 필요한 문장을 복사해 사용하세요.",
+      "image": "",
+      "items": [
+        {
+          "title": "새 프롬프트",
+          "description": "이 프롬프트의 용도와 사용 방법을 적어 주세요.",
+          "prompt": "여기에 보관할 프롬프트를 입력하세요.",
+          "image": ""
+        }
+      ]
     }
   ],
   "dayCounter": {

@@ -18,7 +18,7 @@ function applyStation(){
  text('.station-end>span:nth-child(2)',h.endTitle+'\n'+h.endNote);text('.station-end>span:last-child',config.header.tape);
  text('#backButton',h.returnLabel);const widgetButton=document.getElementById('widgetSummary');widgetButton.innerHTML=uiIcon('signal');widgetButton.setAttribute('aria-label',h.widgetTitle);widgetButton.title=h.widgetTitle;
  text('#archiveStamp',config.decor.stamp);
- const frame=document.querySelector('#archive .frame');
+ const frame=document.querySelector('#archive .frame');document.documentElement.dataset.protectImages=config.decor.protectImages?'on':'off';
  frame.dataset.decor=config.decor.enabled?'on':'off';frame.dataset.grid=config.decor.grid?'on':'off';frame.dataset.frame=config.decor.frame;
  frame.style.setProperty('--margin-note',JSON.stringify(config.decor.verticalText));
  renderDayWidget();clearInterval(dayTimer);dayTimer=setInterval(renderDayWidget,60000);
@@ -135,3 +135,16 @@ function bindLinkSonar(p){
  document.getElementById('sonarNext').onclick=()=>{page++;render();document.querySelector('[data-contact]')?.focus()};
  render();
 }
+
+function bindPromptCopy(p){
+ if(p.type!=='prompts')return;
+ document.querySelectorAll('[data-copy-prompt]').forEach(button=>button.onclick=async()=>{
+  const text=String(p.items?.[+button.dataset.copyPrompt]?.prompt||''),card=button.closest('.prompt-card'),status=card.querySelector('.prompt-status');
+  if(!text){status.textContent='복사할 내용이 없습니다.';return}
+  try{await navigator.clipboard.writeText(text);status.textContent='복사했어요.'}
+  catch(_){const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(card.querySelector('.prompt-text'));selection.removeAllRanges();selection.addRange(range);status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
+ });
+}
+// Discourage casual image saving; public images remain downloadable over the network.
+function protectedPhoto(target){return target instanceof Element&&target.closest('#archive img,#entrance img,.image-slot,.subject-image,.vhs-screen')}
+for(const type of ['contextmenu','dragstart'])document.addEventListener(type,event=>{if(config.decor.protectImages&&protectedPhoto(event.target))event.preventDefault()});
