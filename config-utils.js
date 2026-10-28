@@ -47,15 +47,15 @@ window.ArchiveConfig = {
     const delta=today-start;return {days:delta<0?-delta:delta+(settings.startAtOne?1:0),future:delta<0,valid:true};
   },
   async load(defaults, local = true) {
-    if (local) try {
-      const saved = localStorage.getItem('twilightArchiveConfig');
-      if (saved) return this.normalize(JSON.parse(saved), defaults);
-    } catch (_) { /* Keep an unreadable draft untouched and use published data. */ }
-    try {
-      const r = await fetch('config.json', {cache:'no-store', signal:AbortSignal.timeout(4000)});
-      if (r.ok) return this.normalize(await r.json(), defaults);
-    } catch (_) {}
-    return this.normalize(defaults, defaults);
+    let saved;
+    if(local)try{saved=JSON.parse(localStorage.getItem('twilightArchiveConfig')||'null')}catch(_){}
+    if(saved?.archiveEncrypted===1)return this.normalize(await ArchiveLocks.openSite(saved),defaults);
+    if(saved)try{return this.normalize(saved,defaults)}catch(_){}
+    let published;
+    try{const r=await fetch('config.json',{cache:'no-store',signal:AbortSignal.timeout(4000)});if(r.ok)published=await r.json()}catch(_){}
+    if(published?.archiveEncrypted===1)return this.normalize(await ArchiveLocks.openSite(published),defaults);
+    if(published)try{return this.normalize(published,defaults)}catch(_){}
+    return this.normalize(defaults,defaults);
   },
   image(src) {
     if (typeof src !== 'string' || !src.trim()) return '';

@@ -118,7 +118,7 @@ function bindLinkSonar(p){
  const contact=document.getElementById('linkContact');
  function select(index){
   selected=index;document.querySelectorAll('[data-contact]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.contact===index)));
-  const x=items[index],url=ArchiveConfig.link(x.url);
+  const x=items[index];if(x._sealed){contact.innerHTML=ArchiveLocks.card(index);return}const url=ArchiveConfig.link(x.url);
   contact.innerHTML=`<div class="contact-heading"><span class="contact-pulse" aria-hidden="true"></span><span>CONTACT / ${String(index+1).padStart(2,'0')}</span></div>${x.image?`<img class="contact-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="${escapeHTML(x.title||'')}">`:''}<h3>${escapeHTML(x.title||'LINK')}</h3><p>${nl(x.description||'')}</p>${url!=='#'?`<a class="contact-open" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(config.hud.linkOpen)} <span aria-hidden="true">↗</span></a>`:`<span class="contact-unavailable">${escapeHTML(config.hud.linkUnavailable)}</span>`}`;
   if(matchMedia('(max-width:1000px)').matches)contact.scrollIntoView({block:'nearest',behavior:'instant'});
  }
@@ -142,9 +142,33 @@ function bindPromptCopy(p){
   const text=String(p.items?.[+button.dataset.copyPrompt]?.prompt||''),card=button.closest('.prompt-card'),status=card.querySelector('.prompt-status');
   if(!text){status.textContent='복사할 내용이 없습니다.';return}
   try{await navigator.clipboard.writeText(text);status.textContent='복사했어요.'}
-  catch(_){const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(card.querySelector('.prompt-text'));selection.removeAllRanges();selection.addRange(range);status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
+  catch(_){if(card.querySelector('.prompt-codebox')){let fallback=card.querySelector('.prompt-copy-fallback');if(!fallback){fallback=document.createElement('textarea');fallback.className='prompt-copy-fallback';fallback.readOnly=true;fallback.setAttribute('aria-label','전체 프롬프트 원문 복사');card.append(fallback)}fallback.value=text;fallback.focus();fallback.select()}else{const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(card.querySelector('.prompt-text'));selection.removeAllRanges();selection.addRange(range)}status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
  });
 }
 // Discourage casual image saving; public images remain downloadable over the network.
 function protectedPhoto(target){return target instanceof Element&&target.closest('#archive img,#entrance img,.image-slot,.subject-image,.vhs-screen')}
 for(const type of ['contextmenu','dragstart'])document.addEventListener(type,event=>{if(config.decor.protectImages&&protectedPhoto(event.target))event.preventDefault()});
+
+document.addEventListener('click',async event=>{
+ const button=event.target.closest('[data-unlock-item],[data-unlock-page]');if(!button)return;
+ const p=config.pages.find(x=>x.id===document.getElementById('pageContent').dataset.pageId);if(!p)return;
+ const page=button.hasAttribute('data-unlock-page'),index=+button.dataset.unlockItem,target=page?p:p.items[index];
+ const value=await ArchiveLocks.unlock(target,page?ArchiveLocks.pageKey(p):ArchiveLocks.itemKey(target));if(!value)return;
+ if(page)config.pages[config.pages.indexOf(p)]=value;else p.items[index]=value;showPage(p.id);
+});
+function renderPromptContent(raw){
+ const text=String(raw||'');if(!text.includes('```')&&!/^\[.+\]$/m.test(text))return `<pre class="prompt-text" tabindex="0">${escapeHTML(text)}</pre>`;
+ const lines=text.replace(/\r/g,'').split('\n');let html='',prose=[];
+ const flush=()=>{if(prose.length){html+=`<div class="prompt-prose">${escapeHTML(prose.join('\n'))}</div>`;prose=[]}};
+ for(let i=0;i<lines.length;i++){
+  const line=lines[i],trim=line.trim();
+  if(trim.startsWith('```')){flush();const label=trim.slice(3).trim()||'PROMPT',body=[];i++;while(i<lines.length&&!lines[i].trim().startsWith('```'))body.push(lines[i++]);html+=`<section class="prompt-codebox"><div class="prompt-codehead"><span>${escapeHTML(label)}</span><button type="button" class="prompt-copy" data-copy-box aria-label="${escapeHTML(label+' 복사')}">COPY</button></div><pre class="prompt-text" tabindex="0">${escapeHTML(body.join('\n'))}</pre><span class="prompt-status" role="status"></span></section>`;continue}
+  if(/^\[.+\]$/.test(trim)){flush();html+=`<h4 class="prompt-section-title">${escapeHTML(trim.slice(1,-1))}</h4>`;continue}
+  if(/^---+$/.test(trim)){flush();html+='<hr>';continue}prose.push(line);
+ }
+ flush();return html;
+}
+document.addEventListener('click',async event=>{
+ const button=event.target.closest('[data-copy-box]');if(!button)return;const box=button.closest('.prompt-codebox'),pre=box.querySelector('pre'),status=box.querySelector('.prompt-status');
+ try{await navigator.clipboard.writeText(pre.textContent);status.textContent='복사했어요.'}catch(_){const range=document.createRange();range.selectNodeContents(pre);const selection=getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
+});
