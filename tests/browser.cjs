@@ -9,6 +9,7 @@ fs.mkdirSync(path.join(root,'artifacts'),{recursive:true});
  const context=await browser.newContext({viewport:{width:1440,height:1000}});
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
  const base='http://127.0.0.1:8000/';
+ async function navTo(id){if(await page.locator('#archiveMenuToggle').isVisible())await page.locator('#archiveMenuToggle').click();await page.locator(`[data-page="${id}"]`).click()}
  await page.addInitScript(()=>{window.seenFrames=[];setInterval(()=>{const signal=document.querySelector('#coverSignal')?.textContent;const label=document.querySelector('#reelLabel')?.textContent;if(signal?.includes('MEMORY REEL')&&window.seenFrames.at(-1)!==label)window.seenFrames.push(label)},40)});
  await page.goto(base);await page.waitForSelector('#coverScreen.playing');
  assert.equal(await page.locator('#fastForward').getAttribute('aria-pressed'),'false');
@@ -16,7 +17,7 @@ fs.mkdirSync(path.join(root,'artifacts'),{recursive:true});
  await page.waitForSelector('#archive:not(.hidden)',{timeout:22000});
  assert.deepEqual(await page.evaluate(()=>window.seenFrames),JSON.parse(fs.readFileSync(path.join(root,'config.json'),'utf8')).cover.memories.map(s=>s.caption));
  await page.screenshot({path:path.join(root,'artifacts/archive-desktop.png'),animations:'disabled'});
- for(const id of ['subjects','relationship','memory','video','links','home']){await page.locator(`[data-page="${id}"]`).click();assert.ok(await page.locator('#pageContent').textContent());}
+ for(const id of ['subjects','relationship','memory','video','links','home']){await navTo(id);assert.ok(await page.locator('#pageContent').textContent());}
  await page.locator('#backButton').click();await page.waitForSelector('#coverScreen.playing');assert.match(await page.locator('#coverSignal').textContent(),/01 \/ 05/);
  console.log('PASS: 5 scenes autoplay in order, automatic entry, 6 categories, replay');
  await page.goto(base+'admin.html');await page.waitForSelector('#memorySceneFields .item-editor');assert.equal(await page.locator('#memorySceneFields .item-editor').count(),5);
@@ -39,8 +40,8 @@ fs.mkdirSync(path.join(root,'artifacts'),{recursive:true});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   if(width===390)await page.screenshot({path:path.join(root,'artifacts/entrance-mobile.png')});
   await page.waitForSelector('#archive:not(.hidden)',{timeout:22000});
-  for(const id of ['home','subjects','relationship','memory','video','links']){await page.locator(`[data-page="${id}"]`).click();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width} ${id} overflow`);}
-  await page.locator('[data-page="subjects"]').click();if(width===390)await page.screenshot({path:path.join(root,'artifacts/subjects-mobile.png'),fullPage:true});
+  for(const id of ['home','subjects','relationship','memory','video','links']){await navTo(id);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width} ${id} overflow`);}
+  await navTo('subjects');if(width===390)await page.screenshot({path:path.join(root,'artifacts/subjects-mobile.png'),fullPage:true});
   await page.goto(base+'admin.html');await page.waitForSelector('#memorySceneFields .item-editor');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  }
  console.log('PASS: 320px and 390px entrance, all categories and admin without overflow');
