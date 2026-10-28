@@ -1,3 +1,5 @@
+const uiIcon=(name)=>`<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${({play:'<path d="m9 5 10 7-10 7Z"/>',pause:'<path d="M8 5v14M16 5v14"/>',stop:'<rect x="6" y="6" width="12" height="12"/>',signal:'<circle cx="12" cy="12" r="2"/><path d="M7 7a7 7 0 0 0 0 10M17 7a7 7 0 0 1 0 10M4 4a11 11 0 0 0 0 16M20 4a11 11 0 0 1 0 16"/>'})[name]}</svg>`;
+function bgmIcon(button,playing,youtube,b){const label=playing?(youtube?b.youtubeCloseLabel:b.pauseLabel):(youtube?b.youtubeOpenLabel:b.playLabel);button.innerHTML=uiIcon(playing?(youtube?'stop':'pause'):'play');button.setAttribute('aria-label',label);button.title=label;}
 /* Station widgets are configuration-driven; no remote message storage. */
 const stationAudio = new Audio();
 stationAudio.preload='none';
@@ -14,7 +16,7 @@ function applyStation(){
  text('.signal-legend span:first-child','● '+h.signalOne);text('.signal-legend span:last-child','● '+h.signalTwo);
  text('.station-strip span:first-child',h.station);text('.station-strip span:nth-child(2)',h.coordinates);text('.station-strip span:last-child',h.connection);
  text('.station-end>span:nth-child(2)',h.endTitle+'\n'+h.endNote);text('.station-end>span:last-child',config.header.tape);
- text('#backButton',h.returnLabel);text('#widgetSummary',h.widgetTitle);
+ text('#backButton',h.returnLabel);const widgetButton=document.getElementById('widgetSummary');widgetButton.innerHTML=uiIcon('signal');widgetButton.setAttribute('aria-label',h.widgetTitle);widgetButton.title=h.widgetTitle;
  text('#archiveStamp',config.decor.stamp);
  const frame=document.querySelector('#archive .frame');
  frame.dataset.decor=config.decor.enabled?'on':'off';frame.dataset.grid=config.decor.grid?'on':'off';frame.dataset.frame=config.decor.frame;
@@ -38,12 +40,12 @@ function renderBgmWidget(){
  if(media.type==='audio')stationAudio.src=media.url;
  stationAudio.volume=b.volume;stationAudio.loop=b.loop;
  root.innerHTML=`<div class="radio-emblem" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="radio-copy"><h3>${escapeHTML(b.title)}</h3><p class="track-title">${escapeHTML(b.trackTitle)}</p></div><div class="bgm-controls"><button id="bgmPlay" type="button" aria-pressed="false" ${youtube?'aria-expanded="false" aria-controls="youtubePanel"':''} ${['empty','invalid'].includes(media.type)?'disabled':''}>${escapeHTML(youtube?b.youtubeOpenLabel:b.playLabel)}</button>${youtube?'':`<label><span class="sr-only">${escapeHTML(b.volumeLabel)}</span><input id="bgmVolume" type="range" min="0" max="1" step="0.05" value="${b.volume}" aria-label="${escapeHTML(b.volumeLabel)}"></label>`}</div><p id="bgmStatus" role="status">${media.type==='empty'?escapeHTML(b.emptyText):media.type==='invalid'?escapeHTML(b.errorText):''}</p>${youtube?`<section id="youtubePanel" hidden aria-label="YouTube 플레이어"><div id="youtubeMount"></div><p>${escapeHTML(b.youtubeHint)}</p><a href="${escapeHTML(media.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(b.youtubeFallbackLabel)}</a></section>`:''}`;
- const button=document.getElementById('bgmPlay'),status=document.getElementById('bgmStatus');
+ const button=document.getElementById('bgmPlay'),status=document.getElementById('bgmStatus');bgmIcon(button,false,youtube,b);
  if(youtube){
   const panel=document.getElementById('youtubePanel'),mount=document.getElementById('youtubeMount');
   button.onclick=()=>{
    const open=panel.hidden;panel.hidden=!open;
-   button.textContent=open?b.youtubeCloseLabel:b.youtubeOpenLabel;
+   bgmIcon(button,open,true,b);
    button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-pressed',String(open));
    if(!open){mount.replaceChildren();return}
    const url=new URL('https://www.youtube-nocookie.com/embed/'+media.id);
@@ -55,7 +57,7 @@ function renderBgmWidget(){
   panel.addEventListener('keydown',e=>{if(e.key==='Escape'){button.click();button.focus()}});
   return;
  }
- const sync=()=>{button.textContent=stationAudio.paused?b.playLabel:b.pauseLabel;button.setAttribute('aria-pressed',String(!stationAudio.paused));root.classList.toggle('is-playing',!stationAudio.paused)};
+ const sync=()=>{bgmIcon(button,!stationAudio.paused,false,b);button.setAttribute('aria-pressed',String(!stationAudio.paused));root.classList.toggle('is-playing',!stationAudio.paused)};
  stationAudio.onplay=sync;stationAudio.onpause=sync;stationAudio.onended=sync;
  stationAudio.onerror=()=>{status.textContent=b.errorText;sync()};
  button.onclick=async()=>{if(!stationAudio.paused){stationAudio.pause();return}try{await stationAudio.play();status.textContent=''}catch(_){status.textContent=b.errorText;sync()}};
@@ -104,9 +106,32 @@ closeArchiveMenu(false);
 const floatingShelf=document.getElementById('widgetShelf');
 floatingShelf.addEventListener('keydown',event=>{if(event.key==='Escape'){floatingShelf.open=false;document.getElementById('widgetSummary').focus()}});
 document.addEventListener('pointerdown',event=>{if(floatingShelf.open&&!floatingShelf.contains(event.target))floatingShelf.open=false});
-// A first touch reveals the link label; a second touch follows the link.
-document.addEventListener('click',event=>{
- const banner=event.target.closest('.connection-banner');
- if(!banner||event.detail===0||!matchMedia('(hover:none)').matches)return;
- if(!banner.classList.contains('is-revealed')){event.preventDefault();document.querySelectorAll('.connection-banner.is-revealed').forEach(el=>el.classList.remove('is-revealed'));banner.classList.add('is-revealed')}
-});
+
+function renderLinkSonar(p){
+ const items=p.items||[];
+ return `<section class="link-observatory"><div class="link-observatory-head"><span>${escapeHTML(config.hud.linksTitle)}</span><span>${String(items.length).padStart(2,'0')} / SIGNALS</span></div>${p.description?`<p class="link-intro">${nl(p.description)}</p>`:''}<div class="link-sonar-layout"><div class="sonar-console"><div class="link-sonar" role="group" aria-label="링크 관측점"><div class="sonar-sweep" aria-hidden="true"></div><div class="sonar-cross" aria-hidden="true"></div><span class="sonar-north" aria-hidden="true">N</span><span class="sonar-south" aria-hidden="true">S</span><i class="sonar-core" aria-hidden="true"></i><div id="linkPoints"></div></div><div class="sonar-pagination"><button id="sonarPrevious" type="button" aria-label="이전 관측점">←</button><span id="sonarPage"></span><button id="sonarNext" type="button" aria-label="다음 관측점">→</button></div></div><section id="linkContact" class="link-contact" aria-live="polite" aria-atomic="true"></section></div></section>`;
+}
+function bindLinkSonar(p){
+ if(p.type!=='links')return;
+ const items=p.items||[],perPage=8,total=Math.max(1,Math.ceil(items.length/perPage));let page=0,selected=-1;
+ const positions=[[36,30],[72,28],[25,68],[65,78],[50,15],[83,53],[45,84],[17,45]];
+ const contact=document.getElementById('linkContact');
+ function select(index){
+  selected=index;document.querySelectorAll('[data-contact]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.contact===index)));
+  const x=items[index],url=ArchiveConfig.link(x.url);
+  contact.innerHTML=`<div class="contact-heading"><span class="contact-pulse" aria-hidden="true"></span><span>CONTACT / ${String(index+1).padStart(2,'0')}</span></div>${x.image?`<img class="contact-image" src="${escapeHTML(ArchiveConfig.image(x.image))}" alt="${escapeHTML(x.title||'')}">`:''}<h3>${escapeHTML(x.title||'LINK')}</h3><p>${nl(x.description||'')}</p>${url!=='#'?`<a class="contact-open" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(config.hud.linkOpen)} <span aria-hidden="true">↗</span></a>`:`<span class="contact-unavailable">${escapeHTML(config.hud.linkUnavailable)}</span>`}`;
+  if(matchMedia('(max-width:1000px)').matches)contact.scrollIntoView({block:'nearest',behavior:'instant'});
+ }
+ function render(){
+  const start=page*perPage;
+  document.getElementById('linkPoints').innerHTML=items.slice(start,start+perPage).map((x,i)=>`<button type="button" class="sonar-point ${i%2?'sky':'amber'}" data-contact="${start+i}" style="left:${positions[i][0]}%;top:${positions[i][1]}%" aria-label="${escapeHTML(x.title||'LINK')}" aria-controls="linkContact" aria-pressed="${selected===start+i}"><i aria-hidden="true"></i><span aria-hidden="true">${String(start+i+1).padStart(2,'0')}</span></button>`).join('');
+  document.querySelectorAll('[data-contact]').forEach(b=>b.onclick=()=>select(+b.dataset.contact));
+  document.getElementById('sonarPage').textContent=String(page+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+  document.getElementById('sonarPrevious').disabled=page===0;document.getElementById('sonarNext').disabled=page===total-1;
+  document.getElementById('sonarPrevious').hidden=total===1;document.getElementById('sonarNext').hidden=total===1;
+ }
+ contact.innerHTML=`<div class="contact-idle" aria-hidden="true">◎</div><p>${escapeHTML(items.length?config.hud.linkPrompt:config.hud.linkEmpty)}</p>`;
+ document.getElementById('sonarPrevious').onclick=()=>{page--;render();document.querySelector('[data-contact]')?.focus()};
+ document.getElementById('sonarNext').onclick=()=>{page++;render();document.querySelector('[data-contact]')?.focus()};
+ render();
+}
