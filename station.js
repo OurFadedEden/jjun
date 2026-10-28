@@ -36,7 +36,7 @@ function renderBgmWidget(){
  const b=config.bgm,root=document.getElementById('bgmWidget');root.hidden=!b.enabled;
  stationAudio.onplay=stationAudio.onpause=stationAudio.onended=stationAudio.onerror=null;
  stationAudio.pause();stationAudio.removeAttribute('src');stationAudio.load();
- const media=ArchiveConfig.mediaSource(b.src),youtube=media.type==='youtube';
+ const media=ArchiveConfig.mediaSource(b.src),youtube=media.type==='youtube';root.dataset.source=media.type;
  if(media.type==='audio')stationAudio.src=media.url;
  stationAudio.volume=b.volume;stationAudio.loop=b.loop;
  root.innerHTML=`<div class="radio-emblem" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="radio-copy"><h3>${escapeHTML(b.title)}</h3><p class="track-title">${escapeHTML(b.trackTitle)}</p></div><div class="bgm-controls"><button id="bgmPlay" type="button" aria-pressed="false" ${youtube?'aria-expanded="false" aria-controls="youtubePanel"':''} ${['empty','invalid'].includes(media.type)?'disabled':''}>${escapeHTML(youtube?b.youtubeOpenLabel:b.playLabel)}</button>${youtube?'':`<label><span class="sr-only">${escapeHTML(b.volumeLabel)}</span><input id="bgmVolume" type="range" min="0" max="1" step="0.05" value="${b.volume}" aria-label="${escapeHTML(b.volumeLabel)}"></label>`}</div><p id="bgmStatus" role="status">${media.type==='empty'?escapeHTML(b.emptyText):media.type==='invalid'?escapeHTML(b.errorText):''}</p>${youtube?`<section id="youtubePanel" hidden aria-label="YouTube 플레이어"><div id="youtubeMount"></div><p>${escapeHTML(b.youtubeHint)}</p><a href="${escapeHTML(media.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(b.youtubeFallbackLabel)}</a></section>`:''}`;

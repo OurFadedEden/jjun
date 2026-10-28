@@ -40,3 +40,57 @@
 #archive .side .nav button:hover{background:#a5d4fa25;color:#294d65}.nav-index{border:0;padding:0;font:9px var(--mono);color:#7d96a4}.nav-name{font:10px/1.6 var(--mono);letter-spacing:.035em}#archive .side .nav .num{display:block;font-size:12px;color:#8da8b8}#archive .side .nav button.active .num{color:#a38a46}
 @media(max-width:1000px){#archive .frame{--frame-gutter:12px}}
 @media(max-width:760px){.nav-name{font-size:11px}}
+/* Finish the existing archive: fine calibration marks, no new card language. */
+#archive .frame[data-decor=on] .content-head{position:relative;padding-bottom:16px;border-bottom:1px solid #88a8b442}
+#archive .frame[data-decor=on] .content-head:after{content:'';position:absolute;left:0;bottom:-2px;width:58px;height:3px;background:linear-gradient(90deg,#cfb766 0 44%,transparent 44% 51%,#8cb6d0 51%)}
+#archive .frame[data-decor=on] .station-strip{background:repeating-linear-gradient(90deg,#86a5b74d 0 1px,transparent 1px 12px) left bottom/100% 3px no-repeat;padding-bottom:13px}
+#archive .frame[data-decor=on] .opening-copy{background:linear-gradient(#9ab3c84d,#9ab3c84d) right top/28px 1px no-repeat,linear-gradient(#9ab3c84d,#9ab3c84d) right top/1px 28px no-repeat}
+#archive .frame[data-decor=on] .pair-signatures{border-top:1px dashed #91adbd55;padding-top:14px}
+#archive .frame[data-decor=on] .record-notes section{background-image:linear-gradient(145deg,#fffbe9,#eaf4f7);border-top:2px solid #d3bf7c}
+#archive .frame[data-decor=on] .record-notes section:nth-child(even){border-top-color:#9dc2d8}
+#archive .frame[data-decor=on] .subject .eyebrow{display:flex;align-items:center;gap:9px}
+#archive .frame[data-decor=on] .subject .eyebrow:before{content:'';width:5px;height:5px;border:1px solid #aa904a;background:#faeda5;box-shadow:0 0 0 3px #faeda532;flex-shrink:0}
+#archive .frame[data-decor=on] .blue-subject .eyebrow:before{border-color:#779fb5;background:#a5d4fa;box-shadow:0 0 0 3px #a5d4fa32}
+#archive .frame[data-decor=on] .tape-card{border-top:2px solid #c4b375;background-image:repeating-linear-gradient(90deg,#86a5b74d 0 1px,transparent 1px 7px);background-size:48px 5px;background-repeat:no-repeat;background-position:right 13px top 10px}
+#archive .frame[data-decor=on] .tape-card:nth-child(even){border-top-color:#91b8cf}
+#archive .frame[data-decor=on] .dive-record{border-top:2px solid #a2bdcd}
+#archive .frame[data-decor=on] .station-end{border-top:1px solid #96b0c047;padding-top:16px}
+#bgmWidget[data-source=empty] #bgmStatus{display:none}
+#bgmWidget[data-source=empty] .bgm-controls label{display:none}
+/* The title and music occupy separate mobile rows. The transport remains icon-only. */
+@media(max-width:760px){
+ #archive .topbar{grid-template-columns:36px minmax(0,1fr);gap:10px 12px;padding-top:14px;padding-bottom:0;align-items:center}
+ #archiveMenuToggle{width:36px;height:38px;font-size:19px}
+ #archive .brand-group{min-width:0;gap:9px}
+ #archive .brand-group .brand{font-size:clamp(16px,4.3vw,21px);line-height:1.25;letter-spacing:.025em;white-space:normal;overflow-wrap:anywhere}
+ #archive .brand-group .brand-sub{font-size:8px;line-height:1.5;letter-spacing:.06em;margin-top:4px;color:#617b8c}
+ #pairLogo{width:36px;height:36px}
+ #bgmWidget{grid-column:1/-1;justify-self:stretch;display:flex;width:100%;max-width:none;min-height:42px;border:0;border-top:1px solid #9ab8c751;padding:0;gap:8px;background:linear-gradient(90deg,#ffffff30,#a5d4fa14);align-items:center}
+ #bgmWidget:before{content:'';width:5px;height:5px;border-radius:50%;background:#9cb6c4;flex-shrink:0;margin-left:3px}
+ #bgmWidget.is-playing:before{background:#b9a04a;box-shadow:0 0 0 3px #faeda530}
+ #bgmWidget .radio-copy{flex:1;max-width:none;min-width:0}
+ #bgmWidget .track-title{font-size:10px;max-width:none;color:#546f82;line-height:1.5}
+ #bgmWidget .bgm-controls{gap:7px;flex-shrink:0}
+ #bgmWidget .bgm-controls button{width:42px;height:42px;min-height:42px;padding:12px}
+ #bgmWidget .bgm-controls input{width:42px;margin-right:4px}
+ #bgmWidget #bgmStatus{position:static;background:none;font-size:9px;line-height:1.5;max-width:none;flex-basis:100%;padding:0 0 8px 14px}
+ #bgmWidget:has(#bgmStatus:not(:empty)):not([data-source=empty]){flex-wrap:wrap}
+ #bgmWidget:has(#bgmStatus:not(:empty)):not([data-source=empty]) .radio-copy{flex-basis:calc(100% - 125px)}
+ #archive .content{padding-top:13px}
+ #archive .content-head{gap:10px;align-items:flex-start;margin-top:18px;margin-bottom:20px}
+ .content-title{font-size:17px;line-height:1.5;overflow-wrap:anywhere}.content-sub{font-size:9px;line-height:1.7}.tag{font-size:8px;flex-shrink:0}
+ .station-strip{font-size:8px;line-height:1.7;flex-wrap:wrap;justify-content:space-between;gap:5px}
+ .archive-stamp{font-size:7px;margin-bottom:12px}
+ .opening-copy p,.subject p,.event p,.tape-card p,.dive-record p{font-size:14px;line-height:1.9}
+ .record-notes{gap:14px}.record-notes p{font-size:13px;line-height:1.9}.record-notes h3{font-size:10px}
+ .opening-photo{margin-inline:2px}.opening-photo figcaption{font-size:9px;line-height:1.7}
+ .sonar-console{max-width:270px}.link-contact p{font-size:13px}.contact-open{min-height:42px;align-items:center}
+ #youtubePanel{right:0;top:100%;max-width:calc(100vw - 40px)}
+}
+@media(max-width:350px){#archive .topbar{gap:9px 9px}.brand-text{min-width:0}#archive .brand-group .brand{font-size:16px}#archive .brand-group .brand-sub{font-size:7px}#pairLogo{width:28px;height:28px}.content-title{font-size:16px}}
+@media(max-width:760px){.opening-copy p,.subject p,.tape-card p,.dive-record p,.record-notes p,.link-contact p{word-break:keep-all;overflow-wrap:break-word}}
+#archive{overflow-anchor:none}
+#archive .tape-no{color:#806936}
+#archive .tape-card:nth-child(even) .tape-no{color:#4c748c}
+/* The outer viewport must never scroll when a focused title grows or resizes. */
+#archive{overflow:clip}
