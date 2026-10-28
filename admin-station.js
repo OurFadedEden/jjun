@@ -18,7 +18,7 @@ function renderMessageEditors(){
 }
 function newPageItem(type){
  const common={title:'새 기록',description:'',image:''};
- if(type==='timeline')return {date:'',...common};if(type==='subjects')return {eyebrow:'',...common,subtitle:''};if(type==='links')return {...common,url:''};return common;
+ if(type==='timeline')return {date:'',depth:'',...common};if(type==='subjects')return {eyebrow:'',...common,subtitle:''};if(type==='links')return {...common,url:''};return common;
 }
 function changePageOrder(dir){const i=cfg.pages.findIndex(x=>x.id===document.getElementById('pageSelect').value),j=i+dir;if(j<0||j>=cfg.pages.length)return;[cfg.pages[i],cfg.pages[j]]=[cfg.pages[j],cfg.pages[i]];buildPageSelect();renderJson()}
 document.getElementById('pageUp').onclick=()=>changePageOrder(-1);

@@ -14,7 +14,7 @@ function applyStation(){
  text('.signal-legend span:first-child','● '+h.signalOne);text('.signal-legend span:last-child','● '+h.signalTwo);
  text('.station-strip span:first-child',h.station);text('.station-strip span:nth-child(2)',h.coordinates);text('.station-strip span:last-child',h.connection);
  text('.station-end>span:nth-child(2)',h.endTitle+'\n'+h.endNote);text('.station-end>span:last-child',config.header.tape);
- text('.mobile-observations summary',h.observationTitle);text('#backButton',h.returnLabel);text('#widgetSummary',h.widgetTitle);
+ text('#backButton',h.returnLabel);text('#widgetSummary',h.widgetTitle);
  text('#archiveStamp',config.decor.stamp);
  const frame=document.querySelector('#archive .frame');
  frame.dataset.decor=config.decor.enabled?'on':'off';frame.dataset.grid=config.decor.grid?'on':'off';frame.dataset.frame=config.decor.frame;
@@ -22,7 +22,7 @@ function applyStation(){
  renderDayWidget();clearInterval(dayTimer);dayTimer=setInterval(renderDayWidget,60000);
  renderBgmWidget();renderMessages();
  document.getElementById('widgetShelf').hidden=!config.messages.enabled;
- document.getElementById('widgetShelf').open=true;
+ document.getElementById('widgetShelf').open=false;
 }
 function renderDayWidget(){
  const root=document.getElementById('dayWidget'),d=config.dayCounter;root.hidden=!d.enabled;if(!d.enabled)return;
@@ -99,21 +99,3 @@ document.addEventListener('keydown',e=>{
  }
 });
 closeArchiveMenu(false);
-
-// Keep observation widgets reachable in the main content on small screens.
-const observationShelf=document.createElement('details');
-observationShelf.className='widget-shelf mobile-observations';
-observationShelf.innerHTML='<summary>소나 · 함께한 날짜 · 공명계 · 신호파형</summary><div class="observation-grid"></div>';
-document.getElementById('widgetShelf').before(observationShelf);
-const observationWidgets=[...archiveSidebar.querySelectorAll('.sonar-panel,#dayWidget,.depth-instrument,.signal-instrument')].map(node=>{
- const marker=document.createComment('observation position');node.before(marker);return {node,marker};
-});
-function placeObservationWidgets(){
- observationShelf.hidden=!sidebarMedia.matches;
- for(const {node,marker} of observationWidgets){
-  if(sidebarMedia.matches)observationShelf.querySelector('.observation-grid').append(node);
-  else marker.after(node);
- }
-}
-sidebarMedia.addEventListener('change',placeObservationWidgets);
-placeObservationWidgets();
