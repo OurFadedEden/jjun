@@ -70,14 +70,39 @@ function splitMessageBody(value){
  const tail=text.slice(cursor).trim();if(tail)parts.push(tail);
  return parts.length?parts:[text];
 }
+let chatTimer=null;
 function renderMessages(){
+ clearTimeout(chatTimer);
  const m=config.messages,root=document.getElementById('messageWidget');root.hidden=!m.enabled;
  const messages=m.items.map(x=>{
-  const parts=splitMessageBody(x.body),right=x.side==='right';
-  return `<article class="chat-message ${right?'chat-outgoing':'chat-incoming'}"><span class="chat-avatar" aria-hidden="true">${escapeHTML(Array.from(x.sender|| (right?'D':'J'))[0])}</span><div class="chat-stack"><b class="chat-sender">${escapeHTML(x.sender)}</b>${parts.map(body=>`<div class="message-bubble ${right?'from-right':''}"><p>${nl(body)}</p></div>`).join('')}${x.time?`<span class="chat-time">${escapeHTML(x.time)}</span>`:''}</div></article>`;
+  const parts=splitMessageBody(x.body),right=x.side==='right',avatar=ArchiveConfig.image(m[right?'rightAvatar':'leftAvatar']);
+  return `<article hidden class="chat-message ${right?'chat-outgoing':'chat-incoming'}"><span class="chat-avatar" aria-hidden="true">${avatar?`<img src="${escapeHTML(avatar)}" alt="" loading="lazy">`:escapeHTML(Array.from(x.sender|| (right?'D':'J'))[0])}</span><div class="chat-stack"><b class="chat-sender">${escapeHTML(x.sender)}</b>${parts.map(body=>`<div hidden class="message-bubble ${right?'from-right':''}"><p>${nl(body)}</p></div>`).join('')}${x.time?`<span hidden class="chat-time">${escapeHTML(x.time)}</span>`:''}</div></article>`;
  }).join('');
- root.innerHTML=`<header class="chat-heading"><span class="chat-pair-mark" aria-hidden="true"><i></i><i></i></span><div><span class="chat-channel">PRIVATE FREQUENCY / 0305</span><h3>${escapeHTML(m.title)}</h3></div><button type="button" class="chat-close" aria-label="대화 기록 닫기">×</button></header><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}"><div class="chat-divider"><span>TRANSMISSION ARCHIVE</span></div>${messages||`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}</div><footer class="chat-footer"><span aria-hidden="true">◈</span> BETWEEN TWO SIGNALS <span class="chat-footer-line" aria-hidden="true"></span></footer>`;
+ root.innerHTML=`<header class="chat-heading"><span class="chat-pair-mark" aria-hidden="true"><i></i><i></i></span><div><span class="chat-channel">PRIVATE FREQUENCY / 0305</span><h3>${escapeHTML(m.title)}</h3></div><button type="button" class="chat-close" aria-label="대화 기록 닫기">×</button></header><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}"><div class="chat-divider"><span>TRANSMISSION ARCHIVE</span></div>${messages||`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}<div class="chat-typing" hidden aria-label="메시지를 기다리는 중"><i></i><i></i><i></i></div></div><footer class="chat-footer"><span aria-hidden="true">◈</span> BETWEEN TWO SIGNALS <span class="chat-footer-line" aria-hidden="true"></span></footer>`;
+ root.querySelectorAll('.chat-avatar img').forEach(img=>img.onerror=()=>{img.replaceWith(document.createTextNode('◈'))});
+ if(document.getElementById('widgetShelf').open)advanceChat();
  root.querySelector('.chat-close').onclick=()=>{document.getElementById('widgetShelf').open=false;document.getElementById('widgetSummary').focus()};
+}
+
+// Pause on close and continue where the visitor left off, without duplicate timers.
+function advanceChat(){
+ clearTimeout(chatTimer);
+ const root=document.getElementById('messageWidget'),log=root.querySelector('.message-log'),typing=root.querySelector('.chat-typing');
+ if(!log||!typing)return;
+ const bubble=root.querySelector('.message-bubble[hidden]');
+ typing.hidden=true;
+ if(!document.getElementById('widgetShelf').open||!bubble)return;
+ const row=bubble.closest('.chat-message');
+ typing.classList.toggle('typing-right',row.classList.contains('chat-outgoing'));typing.hidden=false;
+ if(log.scrollHeight-log.scrollTop-log.clientHeight<80)log.scrollTop=log.scrollHeight;
+ chatTimer=setTimeout(()=>{
+  if(!document.getElementById('widgetShelf').open){typing.hidden=true;return}
+  const follow=log.scrollHeight-log.scrollTop-log.clientHeight<80;
+  typing.hidden=true;row.hidden=false;bubble.hidden=false;
+  if(!row.querySelector('.message-bubble[hidden]')){const time=row.querySelector('.chat-time');if(time)time.hidden=false}
+  if(follow)log.scrollTop=log.scrollHeight;
+  advanceChat();
+ },1100);
 }
 
 // Mobile drawer: closed by default, with keyboard focus kept in the open panel.
@@ -116,6 +141,7 @@ document.addEventListener('keydown',e=>{
 closeArchiveMenu(false);
 
 const floatingShelf=document.getElementById('widgetShelf');
+floatingShelf.addEventListener('toggle',()=>{if(floatingShelf.open)advanceChat();else{clearTimeout(chatTimer);const typing=document.querySelector('.chat-typing');if(typing)typing.hidden=true}});
 floatingShelf.addEventListener('keydown',event=>{if(event.key==='Escape'){floatingShelf.open=false;document.getElementById('widgetSummary').focus()}});
 document.addEventListener('pointerdown',event=>{if(floatingShelf.open&&!floatingShelf.contains(event.target))floatingShelf.open=false});
 

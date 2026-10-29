@@ -38,3 +38,15 @@ html[data-mode=dark] #widgetShelf #messageWidget .message-log{background:radial-
 html[data-mode=dark] .chat-avatar{background:#454d37;color:#faeda5;border-color:#b3a77755}
 html[data-mode=dark] .chat-outgoing .chat-avatar{background:#2b4d64;color:#c4e5ff;border-color:#82a9c455}
 @media(max-width:400px){#messageWidget .chat-heading{padding:15px 13px 12px}#widgetShelf #messageWidget .message-log{padding:14px 10px 18px}.chat-stack{max-width:calc(100% - 42px)}.chat-avatar{width:26px;height:26px}.chat-message{gap:6px}}
+
+#messageWidget [hidden]{display:none!important}
+#messageWidget .chat-avatar{overflow:hidden}
+#messageWidget .chat-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+#messageWidget .message-bubble{animation:chat-arrive .24s ease-out}
+.chat-typing{display:flex;gap:4px;width:max-content;padding:12px 15px;margin:10px 0 0 37px;background:var(--chat-left);border-radius:14px;color:var(--chat-muted)}
+.chat-typing.typing-right{margin-left:auto;margin-right:37px;background:var(--chat-right)}
+.chat-typing i{width:4px;height:4px;border-radius:50%;background:currentColor;animation:chat-dot 1s infinite alternate}
+.chat-typing i:nth-child(2){animation-delay:.2s}.chat-typing i:nth-child(3){animation-delay:.4s}
+@keyframes chat-arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes chat-dot{from{opacity:.3}to{opacity:.9}}
+@media(prefers-reduced-motion:reduce){#messageWidget .message-bubble,.chat-typing i{animation:none}}
