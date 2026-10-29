@@ -9,7 +9,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  assert.ok(await page.locator('#pageContent .quote').isVisible());
  const entry=page.locator('.memory-entry').first();await entry.locator('summary').click();
  assert.equal(await entry.locator('.log-dialogue').count(),3);assert.equal(await entry.locator('.log-dialogue-line').count(),2);assert.equal(await entry.locator('img').count(),0);
- await entry.locator('[data-copy-log]').click();assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),text);
+ assert.equal(await page.locator('[data-copy-log],.memory-log-tools').count(),0);
  await page.evaluate(()=>showPage('prompts'));
  await page.locator('.category-link-copy').click();const url=await page.evaluate(()=>navigator.clipboard.readText());assert.ok(url.endsWith('#page=prompts'));assert.ok(!url.includes('preview'));
  assert.equal(await page.locator('.category-link-copy svg').evaluate(e=>e.getBoundingClientRect().width),12);
@@ -17,8 +17,8 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  assert.equal(await page.locator('.category-link-copy').count(),1);
  for(const id of ['home','subjects','relationship','memory','video','links']){await page.evaluate(id=>showPage(id),id);assert.equal(await page.locator('.category-link-copy').count(),0)}
  await page.evaluate(()=>showPage('memory'));await page.locator('.memory-entry summary').click();
- await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:()=>Promise.reject(Error('blocked'))}}));await page.locator('[data-copy-log]').click();assert.equal(await page.locator('.archive-copy-fallback').inputValue(),text);
+
  for(const width of [1440,390,320]){await page.setViewportSize({width,height:900});for(const mode of ['light','dark']){await page.evaluate(mode=>document.documentElement.dataset.mode=mode,mode);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}}
  await page.goto(url);await page.locator('#skipReel').click();assert.equal(await page.locator('#pageContent').getAttribute('data-page-id'),'prompts');assert.equal(await page.locator('.category-link-copy').count(),1);
- assert.deepEqual(errors,[]);console.log('PASS: single quotes unstyled; double quotes styled safely; exact log copy; prompt-only compact link; locked deep link; responsive modes');
+ assert.deepEqual(errors,[]);console.log('PASS: single quotes unstyled; double quotes styled safely; no log copy controls; prompt-only compact link; locked deep link; responsive modes');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exit(1)});
