@@ -115,4 +115,4 @@ async function openPreview(){try{cfg=ArchiveConfig.normalize(cfg,DEFAULT_CONFIG)
 // Disable editing until the published configuration or existing draft has loaded.
 const initialControls=[...document.querySelectorAll('input,button,textarea,select')];initialControls.forEach(el=>el.disabled=true);
 ArchiveConfig.load(DEFAULT_CONFIG).then(c=>{cfg=c;ArchiveLocks.finishBoot();initialControls.forEach(el=>el.disabled=false);fillInputs()}).catch(ArchiveLocks.bootError);
-</script><script src="share-card-editor.js?v=5"></script></body></html>
+</script><script src="share-card-editor.js?v=6"></script></body></html>
