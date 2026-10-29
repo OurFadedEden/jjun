@@ -27,3 +27,8 @@ html[data-mode=dark] #archive .log-dialogue{border-left-color:#88afc2}
 
 #archive #pageContent[data-type="home"] .album-quote blockquote,#archive #pageContent[data-type="memory"] .quote{font-size:22px;line-height:1.8;padding:16px 0 24px}
 @media(max-width:760px){#archive #pageContent[data-type="home"] .album-quote blockquote,#archive #pageContent[data-type="memory"] .quote{font-size:17px;line-height:1.85}}
+@media(max-width:760px){
+ #archive #pageContent[data-type="home"] .album-quote blockquote{font-size:clamp(11px,calc(4.5vw - 3px),15px)}
+ #archive #pageContent[data-type="memory"] .quote{font-size:clamp(9px,calc(3.7vw - 2.5px),14px)}
+ #archive .memory-group-heading h3{font-size:15px}
+}
