@@ -11,8 +11,9 @@
 @media(prefers-reduced-motion:reduce){#archive .memory-open-mark{transition:none}}
 #archive .memory-directory{gap:0}
 #archive .memory-log-text{font-size:14px;line-height:2.1;color:var(--paper);overflow-wrap:anywhere;word-break:keep-all}
-#archive .log-dialogue{color:var(--sky-ink);background:#a5d4fa12;padding:1px 2px}
-#archive .log-dialogue-line{display:inline-block;border-left:2px solid var(--blue);padding:8px 14px;margin:7px 0;background:linear-gradient(90deg,#a5d4fa18,transparent);max-width:100%;box-sizing:border-box}
+#archive .log-dialogue{color:inherit;background:none;border-left:2px solid #8eb8cb;padding:0 0 0 10px}
+#archive .log-dialogue-line{display:inline-block;padding:2px 0 2px 12px;margin:7px 0;max-width:100%;box-sizing:border-box}
+html[data-mode=dark] #archive .log-dialogue{border-left-color:#88afc2}
 #archive .memory-log-tools{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:17px}
 #archive .memory-copy{font:10px var(--mono);padding:8px 11px;color:var(--sky-ink);border:1px solid var(--line);background:transparent;cursor:pointer;min-height:36px}
 #archive .memory-copy-status,#archive .category-copy-status{font-size:10px;line-height:1.6;color:var(--muted)}
