@@ -190,7 +190,7 @@ BGM
 - 업데이트 파일: index.html, admin.html, config-utils.js, admin-station.js, atmosphere.js, atmosphere.css. 기존 config.json은 보존하세요.
 
 공유카드 제작
-- 관리자 > 공유카드 제작에서 사진, 확대/위치, 제목/부제/문구, 밝은 황혼/어두운 심해 분위기를 선택합니다.
+- 관리자 > 공유카드 제작에서 전체 배경 사진, 확대/위치, 인용구와 위치/명암, 밝은 황혼/어두운 심해 분위기를 선택합니다.
 - PNG 다운로드는 1200 × 630 크기의 share-card.png를 만듭니다. 나루의 assets/share-card.png를 이 이미지로 교체하세요.
 - 카드 편집은 현재 창에서만 유지됩니다. config.json 저장/내보내기에 포함되지 않습니다.
 - 이미지 공유 주소는 공개되며, SNS 캐시 때문에 교체 결과가 늦게 표시될 수 있습니다.
