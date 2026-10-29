@@ -8,6 +8,7 @@ window.ArchiveConfig = {
     if(c.theme.deep?.toLowerCase()==='#071521' && c.theme.paper?.toLowerCase()==='#e4edf0' && c.theme.muted?.toLowerCase()==='#8097a6') Object.assign(c.theme,{deep:this.lightTheme.deep,paper:this.lightTheme.paper,muted:this.lightTheme.muted});
     if (!Array.isArray(c.pages) || !c.pages.every(p => p && typeof p === 'object' && typeof p.id === 'string' && (!p.items || (Array.isArray(p.items) && p.items.every(x => x && typeof x === 'object'))))) throw new Error('카테고리 형식을 확인해 주세요.');
     if (!Array.isArray(c.cover.memories) || !c.cover.memories.every(s => s && typeof s === 'object')) throw new Error('회상 장면은 배열이어야 합니다.');
+    c.cover.blurAmount=Number.isFinite(Number(c.cover.blurAmount))?Math.max(0,Math.min(60,Number(c.cover.blurAmount))):22;
     c.cover.memories = c.cover.memories.map(s => ({...s, caption:s.caption || s.label || '', subcaption:s.subcaption || ''}));
     if (!Array.isArray(c.messages.items) || !c.messages.items.every(x=>x && typeof x==='object' && !Array.isArray(x))) throw new Error('교신 기록 형식을 확인해 주세요.');
     if (new Set(c.pages.map(p=>p.id)).size!==c.pages.length) throw new Error('카테고리 ID는 서로 달라야 합니다.');
