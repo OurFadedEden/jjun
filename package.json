@@ -4,7 +4,7 @@
   "version": "3.0.0",
   "scripts": {
     "start": "python3 -m http.server 8000 --bind 0.0.0.0",
-    "test": "node tests/browser.cjs && node tests/transport.cjs && node tests/layout.cjs && node tests/station.cjs && node tests/daylight.cjs && node tests/records.cjs && node tests/floating.cjs && node tests/sonar.cjs && node tests/prompts.cjs && node tests/locks.cjs && node tests/images.cjs && node tests/published.cjs && node tests/atmosphere.cjs && node tests/share-card.cjs && node tests/photo-mode.cjs && node tests/share-details.cjs && node tests/security-review.cjs && node tests/playlist.cjs && node tests/reel-contrast.cjs && node tests/photo-layout.cjs"
+    "test": "node tests/browser.cjs && node tests/transport.cjs && node tests/layout.cjs && node tests/station.cjs && node tests/daylight.cjs && node tests/records.cjs && node tests/floating.cjs && node tests/sonar.cjs && node tests/prompts.cjs && node tests/locks.cjs && node tests/images.cjs && node tests/published.cjs && node tests/atmosphere.cjs && node tests/share-card.cjs && node tests/photo-mode.cjs && node tests/share-details.cjs && node tests/security-review.cjs && node tests/playlist.cjs && node tests/reel-contrast.cjs && node tests/photo-layout.cjs && node tests/youtube-bgm.cjs"
   },
   "devDependencies": {
     "playwright": "1.64.1"
