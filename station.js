@@ -59,9 +59,20 @@ function renderBgmWidget(){
  button.onclick=async()=>{if(!stationAudio.paused){stationAudio.pause();return}try{await stationAudio.play();status.textContent=''}catch(_){status.textContent=b.errorText;sync()}};
  document.getElementById('bgmVolume').oninput=e=>stationAudio.volume=Number(e.target.value);
 }
+// Bracketed chunks are consecutive messages; legacy text stays intact.
+function splitMessageBody(value){
+ const text=String(value??''), parts=[];let cursor=0;
+ for(const match of text.matchAll(/\[([^\[\]]*)\]/g)){
+  const before=text.slice(cursor,match.index).trim();if(before)parts.push(before);
+  if(match[1].trim())parts.push(match[1].trim());
+  cursor=match.index+match[0].length;
+ }
+ const tail=text.slice(cursor).trim();if(tail)parts.push(tail);
+ return parts.length?parts:[text];
+}
 function renderMessages(){
  const m=config.messages,root=document.getElementById('messageWidget');root.hidden=!m.enabled;
- root.innerHTML=`<h3>${escapeHTML(m.title)}</h3><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}">${m.items.length?m.items.map(x=>`<article class="message-bubble ${x.side==='right'?'from-right':''}"><header><b>${escapeHTML(x.sender)}</b><span>${escapeHTML(x.time)}</span></header><p>${nl(x.body)}</p></article>`).join(''):`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}</div>`;
+ root.innerHTML=`<h3>${escapeHTML(m.title)}</h3><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}">${m.items.length?m.items.map(x=>splitMessageBody(x.body).map((body,i)=>`<article class="message-bubble ${x.side==='right'?'from-right':''}">${i===0?`<header><b>${escapeHTML(x.sender)}</b><span>${escapeHTML(x.time)}</span></header>`:''}<p>${nl(body)}</p></article>`).join('')).join(''):`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}</div>`;
 }
 
 // Mobile drawer: closed by default, with keyboard focus kept in the open panel.
