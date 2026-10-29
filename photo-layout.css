@@ -1,0 +1,9 @@
+/* Equal-width record cards, with photographs aligned after variable-length text. */
+#archive .record-notes{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+#archive .record-notes>section{display:flex;flex-direction:column;min-width:0}
+#archive .record-notes>section>p{flex:1;margin-bottom:0;overflow-wrap:anywhere}
+#archive .record-notes .note-photo{flex:none;width:100%;min-width:0;min-height:0;height:auto;aspect-ratio:16/9;padding:0;margin-top:18px;background-size:cover;background-position:center;background-repeat:no-repeat;box-sizing:border-box}
+#archive .record-notes .note-photo:before,#archive .record-notes .note-photo:after{display:none}
+#archive .prompt-image{height:auto;object-fit:contain;object-position:center;background:transparent}
+#archive .user-image{max-width:100%;height:auto}
+@media(max-width:600px){#archive .record-notes{grid-template-columns:minmax(0,1fr);gap:16px}#archive .record-notes .note-photo{margin-top:15px}}
