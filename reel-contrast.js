@@ -3,7 +3,7 @@ window.ReelContrast=(()=>{
  const targets=()=>[...document.querySelectorAll('#coverScreen .screen-label,#coverScreen .screen-time,#coverScreen .screen-bottom,#coverScreen .reel-label,#coverScreen .reel-subcaption')];
  let current=null;
  function reset(){current=null;for(const el of targets()){delete el.dataset.photoInk;for(const key of ['color','text-shadow','background','box-shadow','border-radius'])el.style.removeProperty(key)}}
- function paint(el,dark){el.dataset.photoInk=dark?'dark':'light';el.style.setProperty('color',dark?'#172f40':'#fff9e8','important');el.style.setProperty('text-shadow','none','important');el.style.setProperty('background','none','important');el.style.setProperty('box-shadow','none','important')}
+ function paint(el,dark){el.dataset.photoInk=dark?'dark':'light';el.style.setProperty('color',dark?'#172f40':'#fff9e8','important');el.style.setProperty('text-shadow',dark?'0 .3px .7px rgba(255,250,232,.24)':'0 .3px .7px rgba(5,20,32,.3)','important');el.style.setProperty('background','none','important');el.style.setProperty('box-shadow','none','important')}
 
  function update(img){if(!img?.isConnected||!img.naturalWidth)return;current=img;const screen=document.getElementById('memoryReel'),bounds=screen.getBoundingClientRect();if(!bounds.width||!bounds.height)return;
  const c=document.createElement('canvas');c.width=160;c.height=Math.max(1,Math.round(160*bounds.height/bounds.width));const ctx=c.getContext('2d',{willReadFrequently:true});ctx.fillStyle='#050c12';ctx.fillRect(0,0,c.width,c.height);const scale=Math.min(c.width/img.naturalWidth,c.height/img.naturalHeight),w=img.naturalWidth*scale,h=img.naturalHeight*scale;
