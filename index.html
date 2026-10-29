@@ -381,6 +381,6 @@ function renderAll(){applyTheme();applyCover();applyHeader();showPage(config.pag
 document.getElementById('backButton').addEventListener('click',()=>{
  closeArchiveMenu(false);document.body.classList.remove('archive-open');document.getElementById('archive').classList.add('hidden');document.getElementById('entrance').classList.remove('hidden');window.scrollTo(0,0);playMemoryReel();
 });
-ArchiveConfig.load(DEFAULT_CONFIG).then(c=>{config=c;ArchiveLocks.finishBoot();applyTheme();applyCover();applyHeader();applyStation();ArchiveCursor.apply(config.cursor);showPage(config.pages[0]?.id);playMemoryReel()}).catch(ArchiveLocks.bootError);
+ArchiveConfig.load(DEFAULT_CONFIG,new URLSearchParams(location.search).get('preview')==='1').then(c=>{config=c;ArchiveLocks.finishBoot();applyTheme();applyCover();applyHeader();applyStation();ArchiveCursor.apply(config.cursor);showPage(config.pages[0]?.id);playMemoryReel()}).catch(ArchiveLocks.bootError);
 </script>
 </body></html>

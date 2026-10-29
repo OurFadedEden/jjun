@@ -31,7 +31,7 @@ fs.mkdirSync(path.join(root,'artifacts'),{recursive:true});
  await page.locator('[data-image="cover.memories.0.image"]').setInputFiles({name:'memory.png',mimeType:'image/png',buffer:png});
  await page.waitForSelector('[data-preview="cover.memories.0.image"] img');
  await page.locator('#saveLocal').click();
- const downloadPromise=page.waitForEvent('download');await page.locator('#export').click();const download=await downloadPromise;const exported=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(exported.cover.memories[3].caption,'FIFTH EDITED');assert.equal(exported.pages.length,7);assert.ok(exported.cover.memories[0].image.startsWith('data:image/png'));
+ const downloadPromise=page.waitForEvent('download');await page.locator('#export').click();const download=await downloadPromise;const exported=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(exported.cover.memories[3].caption,'FIFTH EDITED');assert.equal(exported.pages.length,7);assert.ok(exported.cover.memories[0].image.startsWith('data:image/webp'));
  const popupPromise=context.waitForEvent('page');await page.locator('#preview').click();const preview=await popupPromise;await preview.waitForSelector('#coverScreen.playing');assert.equal(await preview.locator('#coverTitle').textContent(),'황혼기록 · 보존된 기억');await preview.waitForFunction(()=>document.querySelector('#memoryReel img')?.naturalWidth>0);await preview.waitForSelector('#archive:not(.hidden)',{timeout:10000});await preview.close();
  console.log('PASS: scene edit/reorder/add/delete, photo upload, export and saved preview');
  await context.clearCookies();await page.evaluate(()=>localStorage.clear());
