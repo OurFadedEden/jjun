@@ -1,0 +1,27 @@
+/* Relationship journal: continuous descent, unboxed narrative chapters. */
+#archive .dive-log{--story-ink:#476b81;--story-accent:#a38c4d;--story-line:#8aabbc55;position:relative;padding:4px 0 18px}
+#archive .dive-heading{padding:18px 0 22px;border-block:1px solid var(--story-line);gap:17px;margin-bottom:16px}
+#archive .dive-emblem{display:grid;place-items:center;flex:none;width:46px;height:46px;border:1px solid var(--story-line);border-radius:50%;font:27px Georgia;color:var(--story-accent);box-shadow:0 0 0 5px #a5d4fa0e}
+#archive .dive-kicker{font:8px var(--mono);letter-spacing:.14em;color:var(--muted)}#archive .dive-heading h3{margin:7px 0 0;font:15px var(--serif);letter-spacing:.04em}
+#archive .dive-count{margin-left:auto;text-align:right;font:30px/1 Georgia;color:var(--story-ink)}#archive .dive-count small{display:block;margin-top:7px;font:7px var(--mono);letter-spacing:.13em}
+#archive .dive-log>p{max-width:620px;font-size:13px;line-height:1.9;margin:22px 0}
+#archive .dive-timeline{margin-top:30px}
+#archive .dive-timeline:before{left:70px;top:13px;bottom:30px;background:linear-gradient(#c9b87a,#95bed6 45%,#42657e);opacity:.7}
+#archive .dive-event{grid-template-columns:71px minmax(0,1fr);gap:28px;padding-bottom:0}
+#archive .dive-depth{padding-top:20px;background:repeating-linear-gradient(180deg,transparent 0 13px,#8da6b344 13px 14px) right/6px 100% no-repeat;font-size:9px}
+#archive .dive-depth span{display:inline-block;padding:4px 6px 4px 0;color:var(--story-ink);background:var(--deep);white-space:nowrap}
+#archive .dive-depth i{top:26px;right:-4px;width:8px;height:8px;background:#faeda5;box-shadow:0 0 0 4px #faeda51f;border-color:#ad9b60}
+#archive .dive-event:nth-child(even) .dive-depth i{background:#a5d4fa;border-color:#729bb5;box-shadow:0 0 0 4px #a5d4fa22}
+html #archive .frame .dive-log .dive-record{position:relative;padding:0 0 30px;margin-bottom:27px;border:0;border-bottom:1px solid var(--story-line);background:none;box-shadow:none;min-width:0}
+#archive .chapter-meta{display:flex;align-items:center;gap:14px;min-height:51px;color:var(--story-ink)}
+#archive .chapter-index{font:italic 34px/1 Georgia;color:var(--story-accent);opacity:.65;flex:none}
+#archive .chapter-meta time{font:9px/1.8 var(--mono);letter-spacing:.05em;overflow-wrap:anywhere}
+#archive .chapter-signal{margin-left:auto;font-size:26px;color:var(--story-accent);opacity:.6}
+#archive .dive-record h3{font:clamp(23px,2.8vw,31px)/1.5 var(--serif);letter-spacing:-.025em;margin:8px 0 16px}
+#archive .dive-record p{max-width:65ch;font-size:14px;line-height:2.1;margin:0;color:var(--paper);word-break:keep-all;overflow-wrap:anywhere}
+#archive .dive-record img{display:block;width:100%;height:auto;max-height:440px;object-fit:contain;object-position:left;margin:22px 0 0;border:1px solid var(--story-line);padding:5px;background:#ffffff22}
+#archive .dive-event:last-child .dive-record{margin-bottom:5px}
+#archive .dive-end{margin-left:99px;font-size:10px;letter-spacing:.5em;color:var(--story-ink);padding:15px 0}
+html[data-mode=dark] #archive .dive-log{--story-ink:#b0cede;--story-accent:#dfcc8d;--story-line:#94bcd42e}
+html[data-mode=dark] #archive .chapter-index{color:#dfcc8d}html[data-mode=dark] #archive .dive-record img{background:#112534}
+@media(max-width:760px){#archive .dive-heading{gap:12px;padding:15px 0}#archive .dive-emblem{width:35px;height:35px;font-size:22px}#archive .dive-kicker{font-size:6px;letter-spacing:.07em}#archive .dive-heading h3{font-size:13px}#archive .dive-count{font-size:24px}#archive .dive-count small{font-size:6px}#archive .dive-event{grid-template-columns:43px minmax(0,1fr);gap:15px}#archive .dive-timeline:before{left:42px}#archive .dive-depth{font-size:7px}#archive .dive-depth span{white-space:normal;overflow-wrap:anywhere;max-width:40px}#archive .chapter-meta{gap:10px}#archive .chapter-index{font-size:28px}#archive .chapter-meta time{font-size:8px}#archive .chapter-signal{display:none}#archive .dive-record p{font-size:13px;line-height:2}#archive .dive-record h3{font-size:23px;margin-top:5px}#archive .dive-end{margin-left:58px}html #archive .frame .dive-log .dive-record{padding-bottom:24px;margin-bottom:18px}}
