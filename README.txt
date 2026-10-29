@@ -183,3 +183,8 @@ BGM
 - 나루에는 admin-images.js를 포함한 최신 홈페이지 파일을 올려야 합니다. 기존 사진/글이 담긴 config.json을 기본 config.json으로 덮어쓰지 마세요.
 - 기존 편집 내용을 공개하려면 관리자에서 DOWNLOAD CONFIG.JSON으로 내려받아 나루의 config.json을 교체하세요. 다른 기기에서 수정하려면 이 파일을 관리자에서 가져오세요.
 - 일반 홈페이지 접속은 브라우저 초안을 무시하고 게시된 config.json만 읽습니다. 관리자 OPEN PREVIEW로 연 ?preview=1 주소에서만 브라우저 초안을 확인합니다. 관리자는 편집 중인 초안을 계속 보관합니다. 공유할 때는 ?preview=1 없는 홈페이지 주소를 사용하세요.
+
+화면 모드와 랜덤 교신
+- 헤더의 해/달 아이콘으로 라이트·다크 모드를 전환합니다. 화면 모드 선택만 별도로 기억하며, 일반 접속에서 관리자 초안을 불러오지는 않습니다.
+- 관리자 > 관측소 설정 > 랜덤 교신에서 한 줄에 하나씩 문구를 입력합니다. 접속할 때 하나를 표시하며 '표시하기'를 끄거나 내용을 모두 지우면 숨깁니다.
+- 업데이트 파일: index.html, admin.html, config-utils.js, admin-station.js, atmosphere.js, atmosphere.css. 기존 config.json은 보존하세요.
