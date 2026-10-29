@@ -30,3 +30,27 @@ html[data-mode=dark] #archive :is(.side,.sonar-panel,.opening-photo,.album-quote
 html[data-mode=dark] #archive :is(.gold,.quote,blockquote,.image-slot strong){color:var(--gold)}
 html[data-mode=dark] #archive :is(.blue,.image-slot span,.opening-photo figcaption,.sonar-panel .micro){color:var(--blue)}
 html[data-mode=dark] .radar{background-color:#17394b;background-blend-mode:soft-light;box-shadow:inset 0 0 18px #a5d4fa22}
+/* Night hardware: keep uploaded photographs untouched. */
+html[data-mode=dark] .tv-dial{background:linear-gradient(135deg,#354d5d,#162b39);border-color:#718894;box-shadow:inset 0 2px 7px #0006,0 1px 2px #0004}
+html[data-mode=dark] .dial-ring{background:repeating-conic-gradient(#93acb9 0deg 2deg,#253e4e 2deg 15deg);border-color:#668391;box-shadow:0 3px 7px #0005,inset 0 0 0 2px #385365}
+html[data-mode=dark] .dial-face{background:radial-gradient(circle at 35% 25%,#5b6559,#334448 65%,#213440);border-color:#7f918f;box-shadow:0 0 0 2px #182c39}
+html[data-mode=dark] .dial-handle{background:linear-gradient(#a8b8b2,#6b817f 36%,#344e59 43%,#203845 78%,#577481);border-color:#809b9e;box-shadow:0 3px 3px #0006,inset 0 1px #d5e6dc66}
+html[data-mode=dark] .speaker-grille{background:repeating-linear-gradient(0deg,#102431 0 3px,#385364 4px 7px,#233e50 8px 10px);border-color:#5b7787;box-shadow:inset 2px 0 7px #0006}
+html[data-mode=dark] .tv-trim{background:#263e4d;border-color:#7894a144}html[data-mode=dark] .tv-trim i{background:radial-gradient(circle at 30% 25%,#faeda5,#a59760 45%,#3a5664 70%);box-shadow:1px 2px 2px #0005}
+html[data-mode=dark] .memory-reel .reel-placeholder{background-image:radial-gradient(ellipse at 52% 35%,#faeda533,transparent 33%),linear-gradient(180deg,#52513c,#353d3c 39%,#244a60 40%,#17364c 57%,#0e2437 100%)}
+html[data-mode=dark] .memory-reel .reel-placeholder:before{background:#e5d995;box-shadow:0 0 35px #faeda533}
+html[data-mode=dark] :is(.screen-label,.screen-time,.screen-bottom,.memory-reel.active .reel-label,.reel-subcaption){color:#e0ecf1;text-shadow:0 1px 4px #06131dcc}
+html[data-mode=dark] .tape-caption .micro{color:#a5c1d3}html[data-mode=dark] .tape-caption .gold{color:#faeda5}
+html[data-mode=dark] #archive :is(.subject,.event,.widget-grid,.message-log){background-color:#142a39;color:var(--paper)}
+html[data-mode=dark] .subject .subject-image:not([style*="background-image"]){background:linear-gradient(135deg,#343e38,#18374c)}
+html[data-mode=dark] .subject .subject-image span{color:#b3cad7}
+html[data-mode=dark] :is(.slot-text b,.image-slot .slot-text b){color:#faeda5}
+html[data-mode=dark] #archive :is(.tag,.radar-bearing,.depth-scale,.day-ruler,.day-reading time,.message-bubble header,.message-subtitle,.empty-message){color:#afc8d8}
+html[data-mode=dark] #archive .signal-instrument path{stroke:#a5d4fa}
+html[data-mode=dark] :is(#archiveMenuClose,#bgmWidget .bgm-controls button,.link-page-button){background:#203e51;color:#dcebf3;border-color:#668da255}
+html[data-mode=dark] .widget-shelf{background:transparent}
+html[data-mode=dark] .message-bubble.from-right{background:#1e3e54}
+html[data-mode=dark] .side .nav button:hover{background:linear-gradient(90deg,#faeda51a,#a5d4fa16);color:#e7f0f5}
+html[data-mode=dark] .image-slot:not(.has-image){background-image:radial-gradient(ellipse,#faeda512,transparent 65%),repeating-linear-gradient(90deg,transparent 0 39px,#a5d4fa0c 40px),repeating-linear-gradient(0deg,transparent 0 39px,#a5d4fa0c 40px)}
+html[data-mode=dark] #archive .image-slot .slot-text{color:#b1cbd9}
+html[data-mode=dark] #archive :is(.tape-no,.archive-stamp){color:#d3bd80}
