@@ -1,7 +1,13 @@
 /* GIF uses an image overlay; ANI frames are decoded locally, never uploaded. */
 window.ArchiveCursor=(()=>{
  const svg=body=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">${body}</svg>`);
- const presets={sonar:svg('<circle cx="16" cy="16" r="11" fill="#FAEDA566" stroke="#456B82"/><circle cx="16" cy="16" r="5" fill="none" stroke="#456B82"/><path d="M16 16V5A11 11 0 0 1 27 16Z" fill="#A5D4FA"/><circle cx="16" cy="16" r="2" fill="#354F65"/>'),star:svg('<path d="m16 2 4 10 10 4-10 4-4 10-4-10L2 16l10-4Z" fill="#FAEDA5" stroke="#647E90"/>'),cross:svg('<circle cx="16" cy="16" r="8" fill="#A5D4FA55" stroke="#57788E"/><path d="M16 1v10m0 10v10M1 16h10m10 0h10" stroke="#355D77"/><circle cx="16" cy="16" r="2" fill="#9A8140"/>')};
+ // Fine engraved outlines with a pale keyline stay legible on both display modes.
+ const ink=body=>`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#eaf5fa" stroke-width="2.8">${body}</g><g stroke="#42677c" stroke-width="1">${body}</g></g>`;
+ const presets={
+ sonar:svg(ink('<path d="M7 11a10 10 0 0 1 15-3M25 12a10 10 0 0 1-13 13M8 22l-2 2"/><path d="M16 7v2M25 16h-2M16 25v-2"/>')+'<path d="M16 16 21 11" stroke="#a5d4fa" stroke-width="1.2"/><circle cx="16" cy="16" r="2" fill="#faeda5" stroke="#42677c" stroke-width=".8"/><circle cx="9" cy="9" r="1.4" fill="#faeda5" stroke="#42677c" stroke-width=".6"/>'),
+ star:svg(ink('<path d="M16 6c0 7-3 10-10 10 7 0 10 3 10 10 0-7 3-10 10-10-7 0-10-3-10-10Z"/>')+'<path d="M16 10v12M10 16h12" stroke="#faeda5" stroke-width="1"/><circle cx="25" cy="7" r="1.2" fill="#a5d4fa" stroke="#42677c" stroke-width=".6"/>'),
+ cross:svg(ink('<path d="M7 12V7h5M20 7h5v5M25 20v5h-5M12 25H7v-5M12 16h8M16 12v8"/>')+'<path d="M7 9V7h2M23 25h2v-2" fill="none" stroke="#a5d4fa" stroke-width="1.2"/><circle cx="16" cy="16" r="1.3" fill="#faeda5" stroke="#42677c" stroke-width=".6"/>')
+ };
  const error=()=>new Error('이 커서 형식은 읽을 수 없어요. GIF·PNG 또는 PNG/비압축 비트맵 프레임의 ANI를 사용해 주세요.');
  async function icon(bytes){
   const v=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);if(bytes.length<22||v.getUint16(0,true)!==0||![1,2].includes(v.getUint16(2,true)))throw error();
