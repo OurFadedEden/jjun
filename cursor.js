@@ -1,13 +1,18 @@
 /* GIF uses an image overlay; ANI frames are decoded locally, never uploaded. */
 window.ArchiveCursor=(()=>{
- const svg=body=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">${body}</svg>`);
- // Fine engraved outlines with a pale keyline stay legible on both display modes.
- const ink=body=>`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#eaf5fa" stroke-width="2.8">${body}</g><g stroke="#42677c" stroke-width="1">${body}</g></g>`;
+ const svg=body=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><defs><filter id="halo" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.6"/></filter><radialGradient id="bloom"><stop stop-color="#FAEDA5" stop-opacity=".38"/><stop offset=".55" stop-color="#A5D4FA" stop-opacity=".18"/><stop offset="1" stop-color="#A5D4FA" stop-opacity="0"/></radialGradient></defs><circle cx="16" cy="16" r="15" fill="url(#bloom)"/>${body}</svg>`);
+ // Diffused colored light, not a hard white cutout around the outline.
+ const ink=body=>`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#A5D4FA" stroke-width="2.3" opacity=".8" filter="url(#halo)">${body}</g><g stroke="#688b9b" stroke-width=".85">${body}</g><g stroke="#FAEDA5" stroke-width=".4" opacity=".6">${body}</g></g>`;
  const presets={
  sonar:svg(ink('<path d="M7 11a10 10 0 0 1 15-3M25 12a10 10 0 0 1-13 13M8 22l-2 2"/><path d="M16 7v2M25 16h-2M16 25v-2"/>')+'<path d="M16 16 21 11" stroke="#a5d4fa" stroke-width="1.2"/><circle cx="16" cy="16" r="2" fill="#faeda5" stroke="#42677c" stroke-width=".8"/><circle cx="9" cy="9" r="1.4" fill="#faeda5" stroke="#42677c" stroke-width=".6"/>'),
  star:svg(ink('<path d="M16 6c0 7-3 10-10 10 7 0 10 3 10 10 0-7 3-10 10-10-7 0-10-3-10-10Z"/>')+'<path d="M16 10v12M10 16h12" stroke="#faeda5" stroke-width="1"/><circle cx="25" cy="7" r="1.2" fill="#a5d4fa" stroke="#42677c" stroke-width=".6"/>'),
  cross:svg(ink('<path d="M7 12V7h5M20 7h5v5M25 20v5h-5M12 25H7v-5M12 16h8M16 12v8"/>')+'<path d="M7 9V7h2M23 25h2v-2" fill="none" stroke="#a5d4fa" stroke-width="1.2"/><circle cx="16" cy="16" r="1.3" fill="#faeda5" stroke="#42677c" stroke-width=".6"/>')
  };
+ Object.assign(presets,{
+ moon:svg(ink('<path d="M20 7a9 9 0 1 0 5 14A10 10 0 0 1 20 7Z"/>')+'<circle cx="16" cy="16" r="1.4" fill="#FAEDA5"/><path d="M25 8v4m-2-2h4" stroke="#A5D4FA" stroke-width=".8"/>'),
+ orbit:svg(ink('<ellipse cx="16" cy="16" rx="12" ry="5" transform="rotate(-35 16 16)"/><circle cx="16" cy="16" r="5"/>')+'<circle cx="16" cy="16" r="1.5" fill="#FAEDA5"/><circle cx="25" cy="10" r="1.5" fill="#A5D4FA"/>'),
+ drop:svg(ink('<path d="M16 5c-2 5-8 10-8 15a8 8 0 0 0 16 0c0-5-6-10-8-15Z"/><path d="M11 20a5 5 0 0 0 5 5"/>')+'<circle cx="16" cy="16" r="1.5" fill="#FAEDA5"/>')
+ });
  const error=()=>new Error('이 커서 형식은 읽을 수 없어요. GIF·PNG 또는 PNG/비압축 비트맵 프레임의 ANI를 사용해 주세요.');
  async function icon(bytes){
   const v=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);if(bytes.length<22||v.getUint16(0,true)!==0||![1,2].includes(v.getUint16(2,true)))throw error();
@@ -38,7 +43,7 @@ window.ArchiveCursor=(()=>{
  let cleanup=()=>{};
  async function apply(c={mode:'default'}){
   cleanup();if(c.mode==='default'||!c.mode)return;let frames;try{frames=await prepare(c)}catch(_){return}if(!frames[0]?.src)return;
-  const el=document.createElement('img');el.id='archiveCursor';el.alt='';el.setAttribute('aria-hidden','true');document.body.append(el);const media=matchMedia('(hover:hover) and (pointer:fine)'),reduce=matchMedia('(prefers-reduced-motion:reduce)');let timer,step=0,active=false;
+  const el=document.createElement('img');el.id='archiveCursor';if(c.mode!=='custom')el.style.filter='none';el.alt='';el.setAttribute('aria-hidden','true');document.body.append(el);const media=matchMedia('(hover:hover) and (pointer:fine)'),reduce=matchMedia('(prefers-reduced-motion:reduce)');let timer,step=0,active=false;
   const size=Math.min(64,Math.max(16,Number(c.size)||32));el.style.width=size+'px';el.style.height=size+'px';
   const frame=()=>{const f=frames[step];el.src=f.src;el.style.marginLeft=-(f.x*size)+'px';el.style.marginTop=-(f.y*size)+'px';if(active&&!reduce.matches&&frames.length>1)timer=setTimeout(()=>{step=(step+1)%frames.length;frame()},f.delay)};
   const hide=()=>{active=false;clearTimeout(timer);el.hidden=true;document.documentElement.classList.remove('custom-cursor')};
