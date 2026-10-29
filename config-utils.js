@@ -46,9 +46,20 @@ window.ArchiveConfig = {
     if(start===null)return {days:0,future:false,valid:false};
     const delta=today-start;return {days:delta<0?-delta:delta+(settings.startAtOne?1:0),future:delta<0,valid:true};
   },
+  async draftDB(mode, value) {
+    const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('twilightArchiveDraft',1);r.onupgradeneeded=()=>r.result.createObjectStore('draft');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+    try{return await new Promise((resolve,reject)=>{const tx=db.transaction('draft',mode==='get'?'readonly':'readwrite'),store=tx.objectStore('draft');const r=mode==='get'?store.get('config'):store.put(value,'config');tx.oncomplete=()=>resolve(r.result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)})}finally{db.close()}
+  },
+  async saveDraft(value) {
+    const json=JSON.stringify(value);
+    try{localStorage.setItem('twilightArchiveConfig',json);return}catch(_){}
+    await this.draftDB('put',value);
+    try{localStorage.setItem('twilightArchiveConfig',JSON.stringify({draftInDatabase:true}))}catch(_){try{localStorage.removeItem('twilightArchiveConfig')}catch(_){} }
+  },
   async load(defaults, local = true) {
     let saved;
     if(local)try{saved=JSON.parse(localStorage.getItem('twilightArchiveConfig')||'null')}catch(_){}
+    if(local && (!saved || saved.draftInDatabase))try{saved=await this.draftDB('get')}catch(_){}
     if(saved?.archiveEncrypted===1)return this.normalize(await ArchiveLocks.openSite(saved),defaults);
     if(saved)try{return this.normalize(saved,defaults)}catch(_){}
     let published;

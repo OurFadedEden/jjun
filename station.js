@@ -141,7 +141,7 @@ function bindPromptCopy(p){
  document.querySelectorAll('[data-copy-prompt]').forEach(button=>button.onclick=async()=>{
   const text=String(p.items?.[+button.dataset.copyPrompt]?.prompt||''),card=button.closest('.prompt-card'),status=card.querySelector('.prompt-status');
   if(!text){status.textContent='복사할 내용이 없습니다.';return}
-  try{await navigator.clipboard.writeText(text);status.textContent='복사했어요.'}
+  try{await navigator.clipboard.writeText(text);status.textContent='복사했어요.';alert('복사했습니다');}
   catch(_){if(card.querySelector('.prompt-codebox')){let fallback=card.querySelector('.prompt-copy-fallback');if(!fallback){fallback=document.createElement('textarea');fallback.className='prompt-copy-fallback';fallback.readOnly=true;fallback.setAttribute('aria-label','전체 프롬프트 원문 복사');card.append(fallback)}fallback.value=text;fallback.focus();fallback.select()}else{const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(card.querySelector('.prompt-text'));selection.removeAllRanges();selection.addRange(range)}status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
  });
 }
@@ -171,5 +171,5 @@ function renderPromptContent(raw){
 }
 document.addEventListener('click',async event=>{
  const button=event.target.closest('[data-copy-box]');if(!button)return;const box=button.closest('.prompt-codebox'),pre=box.querySelector('pre'),status=box.querySelector('.prompt-status');
- try{await navigator.clipboard.writeText(pre.textContent);status.textContent='복사했어요.'}catch(_){const range=document.createRange();range.selectNodeContents(pre);const selection=getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
+ try{await navigator.clipboard.writeText(pre.textContent);status.textContent='복사했어요.';alert('복사했습니다');}catch(_){const range=document.createRange();range.selectNodeContents(pre);const selection=getSelection();selection.removeAllRanges();selection.addRange(range);status.textContent='본문을 선택했어요. 복사 메뉴 또는 Ctrl/Cmd+C를 사용해 주세요.'}
 });
