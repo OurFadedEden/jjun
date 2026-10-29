@@ -18,7 +18,9 @@ html[data-mode=dark] #archive .log-dialogue{border-left-color:#88afc2}
 #archive .memory-copy{font:10px var(--mono);padding:8px 11px;color:var(--sky-ink);border:1px solid var(--line);background:transparent;cursor:pointer;min-height:36px}
 #archive .memory-copy-status,#archive .category-copy-status{font-size:10px;line-height:1.6;color:var(--muted)}
 #categoryShareTools{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin:-10px 0 16px;flex-wrap:wrap}
-.category-link-copy{width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--sky-ink);cursor:pointer}
-.category-link-copy svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.category-link-copy{width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:4px;background:transparent;color:var(--sky-ink);cursor:pointer}
+.category-link-copy svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .archive-copy-fallback{width:100%;min-height:80px;max-height:180px;box-sizing:border-box;background:var(--deep);color:var(--paper);border:1px solid var(--line);padding:10px}
 .category-link-copy:focus-visible,.memory-copy:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+@media(max-width:760px){#archive #pageContent[data-type="memory"] .quote{font-size:20px;line-height:1.85}#archive .memory-group-heading h3{font-size:19px}}
