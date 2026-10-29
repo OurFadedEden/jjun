@@ -29,8 +29,8 @@ function applyStation(){
 function renderDayWidget(){
  const root=document.getElementById('dayWidget'),d=config.dayCounter;root.hidden=!d.enabled;if(!d.enabled)return;
  const count=ArchiveConfig.dayInfo(d),days=count.days;
- const max=Math.max(100,Math.ceil(Math.max(days,1)/100)*100),ratio=Math.min(100,days/max*100);
- root.innerHTML=`<div class="instrument-heading">${escapeHTML(d.title)}</div><div class="day-gauge"><div class="day-ruler" aria-hidden="true"><span>0</span><span>${Math.round(max/2)}</span><span>${max}</span><i style="top:${ratio}%"></i></div><div class="day-reading"><div class="day-name">${escapeHTML(d.name)}</div><strong id="dayValue">${count.future?'−':''}${days.toLocaleString('ko-KR')}<small>${escapeHTML(count.future?'':d.unit)}</small></strong><span id="dayDescription">${count.future?escapeHTML(d.futureLabel)+' '+days+'일':days+escapeHTML(d.suffix)}</span><time datetime="${escapeHTML(d.startDate)}">${escapeHTML(d.startDate.replaceAll('-','.'))}</time></div></div>`;
+ const max=Number.isFinite(Number(d.maxDepth))&&Number(d.maxDepth)>0?Number(d.maxDepth):10928,ratio=Math.min(100,days/max*100);
+ root.innerHTML=`<div class="instrument-heading">${escapeHTML(d.title)}</div><div class="day-gauge"><div class="day-ruler" aria-hidden="true"><span>0</span><span>${Math.round(max/2).toLocaleString('ko-KR')}</span><span>${max.toLocaleString('ko-KR')}</span><i style="top:${ratio}%"></i></div><div class="day-reading"><div class="day-name">${escapeHTML(d.name)}</div><strong id="dayValue">${count.future?'−':''}${days.toLocaleString('ko-KR')}<small>${escapeHTML(count.future?'':d.unit)}</small></strong><span id="dayDescription">${count.future?escapeHTML(d.futureLabel)+' '+days+'일':days+escapeHTML(d.suffix)}</span><time datetime="${escapeHTML(d.startDate)}">${escapeHTML(d.startDate.replaceAll('-','.'))}</time></div></div>`;
 }
 let selectedBgm=0,youtubeBgm=null;
 function renderBgmWidget(){
