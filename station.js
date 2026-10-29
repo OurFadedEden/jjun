@@ -72,7 +72,12 @@ function splitMessageBody(value){
 }
 function renderMessages(){
  const m=config.messages,root=document.getElementById('messageWidget');root.hidden=!m.enabled;
- root.innerHTML=`<h3>${escapeHTML(m.title)}</h3><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}">${m.items.length?m.items.map(x=>splitMessageBody(x.body).map((body,i)=>`<article class="message-bubble ${x.side==='right'?'from-right':''}">${i===0?`<header><b>${escapeHTML(x.sender)}</b><span>${escapeHTML(x.time)}</span></header>`:''}<p>${nl(body)}</p></article>`).join('')).join(''):`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}</div>`;
+ const messages=m.items.map(x=>{
+  const parts=splitMessageBody(x.body),right=x.side==='right';
+  return `<article class="chat-message ${right?'chat-outgoing':'chat-incoming'}"><span class="chat-avatar" aria-hidden="true">${escapeHTML(Array.from(x.sender|| (right?'D':'J'))[0])}</span><div class="chat-stack"><b class="chat-sender">${escapeHTML(x.sender)}</b>${parts.map(body=>`<div class="message-bubble ${right?'from-right':''}"><p>${nl(body)}</p></div>`).join('')}${x.time?`<span class="chat-time">${escapeHTML(x.time)}</span>`:''}</div></article>`;
+ }).join('');
+ root.innerHTML=`<header class="chat-heading"><span class="chat-pair-mark" aria-hidden="true"><i></i><i></i></span><div><span class="chat-channel">PRIVATE FREQUENCY / 0305</span><h3>${escapeHTML(m.title)}</h3></div><button type="button" class="chat-close" aria-label="대화 기록 닫기">×</button></header><p class="message-subtitle">${escapeHTML(m.subtitle)}</p><div class="message-log" tabindex="0" aria-label="${escapeHTML(m.title)}"><div class="chat-divider"><span>TRANSMISSION ARCHIVE</span></div>${messages||`<p class="empty-message">${escapeHTML(m.emptyText)}</p>`}</div><footer class="chat-footer"><span aria-hidden="true">◈</span> BETWEEN TWO SIGNALS <span class="chat-footer-line" aria-hidden="true"></span></footer>`;
+ root.querySelector('.chat-close').onclick=()=>{document.getElementById('widgetShelf').open=false;document.getElementById('widgetSummary').focus()};
 }
 
 // Mobile drawer: closed by default, with keyboard focus kept in the open panel.
