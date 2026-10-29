@@ -32,14 +32,18 @@ function renderDayWidget(){
  const max=Math.max(100,Math.ceil(Math.max(days,1)/100)*100),ratio=Math.min(100,days/max*100);
  root.innerHTML=`<div class="instrument-heading">${escapeHTML(d.title)}</div><div class="day-gauge"><div class="day-ruler" aria-hidden="true"><span>0</span><span>${Math.round(max/2)}</span><span>${max}</span><i style="top:${ratio}%"></i></div><div class="day-reading"><div class="day-name">${escapeHTML(d.name)}</div><strong id="dayValue">${count.future?'−':''}${days.toLocaleString('ko-KR')}<small>${escapeHTML(count.future?'':d.unit)}</small></strong><span id="dayDescription">${count.future?escapeHTML(d.futureLabel)+' '+days+'일':days+escapeHTML(d.suffix)}</span><time datetime="${escapeHTML(d.startDate)}">${escapeHTML(d.startDate.replaceAll('-','.'))}</time></div></div>`;
 }
+let selectedBgm=0;
 function renderBgmWidget(){
- const b=config.bgm,root=document.getElementById('bgmWidget');root.hidden=!b.enabled;
+ const base=config.bgm,tracks=base.tracks?.length?base.tracks:[{title:base.trackTitle,src:base.src}];
+ selectedBgm=Math.min(selectedBgm,tracks.length-1);
+ const b={...base,src:tracks[selectedBgm].src,trackTitle:tracks[selectedBgm].title},root=document.getElementById('bgmWidget');root.hidden=!b.enabled;root.classList.remove('is-playing');
  stationAudio.onplay=stationAudio.onpause=stationAudio.onended=stationAudio.onerror=null;
  stationAudio.pause();stationAudio.removeAttribute('src');stationAudio.load();
  const media=ArchiveConfig.mediaSource(b.src),youtube=media.type==='youtube';root.dataset.source=media.type;
  if(media.type==='audio')stationAudio.src=media.url;
  stationAudio.volume=b.volume;stationAudio.loop=b.loop;
  root.innerHTML=`<div class="radio-emblem" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="radio-copy"><h3>${escapeHTML(b.title)}</h3><p class="track-title">${escapeHTML(b.trackTitle)}</p></div><div class="bgm-controls"><button id="bgmPlay" type="button" aria-pressed="false" ${youtube?'aria-expanded="false" aria-controls="youtubePanel"':''} ${['empty','invalid'].includes(media.type)?'disabled':''}>${escapeHTML(youtube?b.youtubeOpenLabel:b.playLabel)}</button>${youtube?'':`<label><span class="sr-only">${escapeHTML(b.volumeLabel)}</span><input id="bgmVolume" type="range" min="0" max="1" step="0.05" value="${b.volume}" aria-label="${escapeHTML(b.volumeLabel)}"></label>`}</div><p id="bgmStatus" role="status">${media.type==='empty'?escapeHTML(b.emptyText):media.type==='invalid'?escapeHTML(b.errorText):''}</p>${youtube?`<section id="youtubePanel" hidden aria-label="YouTube 플레이어"><div id="youtubeMount"></div><p>${escapeHTML(b.youtubeHint)}</p><a href="${escapeHTML(media.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(b.youtubeFallbackLabel)}</a></section>`:''}`;
+ if(tracks.length>1){const copy=root.querySelector('.radio-copy'),select=document.createElement('select');select.id='bgmPlaylist';select.setAttribute('aria-label','BGM 곡 선택');tracks.forEach((t,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1).padStart(2,'0')+' / '+(t.title||'Untitled');select.append(option)});select.value=String(selectedBgm);copy.querySelector('.track-title').hidden=true;copy.append(select);select.onchange=()=>{selectedBgm=Number(select.value);renderBgmWidget();document.getElementById('bgmPlaylist')?.focus()}}
  const button=document.getElementById('bgmPlay'),status=document.getElementById('bgmStatus');bgmIcon(button,false,youtube,b);
  if(youtube){
   const panel=document.getElementById('youtubePanel'),mount=document.getElementById('youtubeMount');

@@ -7,8 +7,8 @@ function renderStationSettings(){
  if(key==='frame')return `<div class="field"><label>${label}<select data-path="${path}">${['double','line','dashed'].map(x=>`<option ${value===x?'selected':''} value="${x}">${({double:'이중선',line:'선',dashed:'점선'})[x]}</option>`).join('')}</select></label></div>`;
  if(typeof value==='boolean')return `<div class="field"><label><input type="checkbox" data-path="${path}" ${value?'checked':''}> ${label}</label></div>`;
  return `<div class="field"><label>${label}<input type="${key==='startDate'?'date':typeof value==='number'?'number':'text'}" data-path="${path}" value="${esc(value)}" ${key==='volume'?'min="0" max="1" step="0.05"':''}></label></div>`;
- }).join('')}</div>${section==='messages'?'<div id="messageEditors"></div><button class="btn" id="addMessage">+ 메시지 추가</button>':''}</section>`).join('');
- bindFields(root);renderMessageEditors();document.getElementById('addMessage').onclick=()=>{cfg.messages.items.push({sender:'',body:'',time:'',side:'left'});renderMessageEditors();renderJson()};
+ }).join('')}</div>${section==='bgm'?'<p class="hint">아래 목록에 곡을 추가하면 위의 단일 곡 대신 목록을 사용합니다. 목록이 비어 있으면 기존 곡을 사용합니다. 방문자는 드롭다운에서 선택한 뒤 재생 버튼을 누릅니다.</p><div id="bgmTrackEditors"></div><button class="btn" id="addBgmTrack" type="button">+ 곡 추가</button>':''}${section==='messages'?'<div id="messageEditors"></div><button class="btn" id="addMessage">+ 메시지 추가</button>':''}</section>`).join('');
+ bindFields(root);renderBgmTrackEditors();renderMessageEditors();document.getElementById('addMessage').onclick=()=>{cfg.messages.items.push({sender:'',body:'',time:'',side:'left'});renderMessageEditors();renderJson()};
 }
 function renderMessageEditors(){
  const root=document.getElementById('messageEditors');if(!root)return;
@@ -31,3 +31,10 @@ document.getElementById('addPage').onclick=()=>{
  template.id='page-'+Date.now().toString(36);template.nav='새 카테고리';template.title='새 카테고리';if(template.items)template.items=[];
  cfg.pages.push(template);buildPageSelect();document.getElementById('pageSelect').value=template.id;renderPageFields();renderJson();
 };
+
+function renderBgmTrackEditors(){
+ const root=document.getElementById('bgmTrackEditors');if(!root)return;cfg.bgm.tracks??=[];
+ root.innerHTML=cfg.bgm.tracks.map((t,i)=>`<div class="item-editor"><div class="item-head">TRACK ${i+1}<div class="actions"><button type="button" class="btn" data-track-up="${i}" ${i===0?'disabled':''}>↑</button><button type="button" class="btn" data-track-down="${i}" ${i===cfg.bgm.tracks.length-1?'disabled':''}>↓</button><button type="button" class="btn" data-track-delete="${i}">삭제</button></div></div><div class="fields"><label>곡 이름<input type="text" data-path="bgm.tracks.${i}.title" value="${esc(t.title)}"></label><label>음원 경로 / YouTube 링크<input type="text" data-path="bgm.tracks.${i}.src" value="${esc(t.src)}"></label></div></div>`).join('');bindFields(root);
+ root.querySelectorAll('[data-track-up],[data-track-down],[data-track-delete]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.trackUp??b.dataset.trackDown??b.dataset.trackDelete);if(b.dataset.trackDelete!==undefined){if(!confirm('이 곡을 목록에서 삭제할까요?'))return;cfg.bgm.tracks.splice(i,1)}else{const j=i+(b.dataset.trackUp!==undefined?-1:1);[cfg.bgm.tracks[i],cfg.bgm.tracks[j]]=[cfg.bgm.tracks[j],cfg.bgm.tracks[i]]}renderBgmTrackEditors();renderJson()});
+ document.getElementById('addBgmTrack').onclick=()=>{if(!cfg.bgm.tracks.length&&cfg.bgm.src)cfg.bgm.tracks.push({title:cfg.bgm.trackTitle||'기존 곡',src:cfg.bgm.src});cfg.bgm.tracks.push({title:'새 곡',src:''});renderBgmTrackEditors();renderJson()};
+}

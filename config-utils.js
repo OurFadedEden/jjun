@@ -13,6 +13,8 @@ window.ArchiveConfig = {
     if (new Set(c.pages.map(p=>p.id)).size!==c.pages.length) throw new Error('카테고리 ID는 서로 달라야 합니다.');
     if (this.dateNumber(c.dayCounter.startDate)===null) throw new Error('시작 날짜를 확인해 주세요.');
     try{new Intl.DateTimeFormat('en',{timeZone:c.dayCounter.timezone}).format()}catch(_){throw new Error('시간대를 확인해 주세요.');}
+    if(c.bgm.tracks!==undefined&&(!Array.isArray(c.bgm.tracks)||!c.bgm.tracks.every(t=>t&&typeof t==='object'&&typeof t.src==='string'&&typeof t.title==='string')))throw new Error('BGM 목록의 곡 이름과 주소를 확인해 주세요.');
+    c.bgm.tracks??=[];
     c.bgm.volume=Math.max(0,Math.min(1,Number(c.bgm.volume)||0));
     return c;
   },
