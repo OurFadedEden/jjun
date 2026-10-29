@@ -65,3 +65,15 @@ html[data-mode=dark] #archive .archive-unlock-form input::placeholder{color:#93a
 
 .youtube-audio-host{position:fixed;width:1px;height:1px;overflow:hidden;left:-10px;bottom:0;pointer-events:none;opacity:0}
 html[data-mode=dark] #archive .radar{background-image:repeating-radial-gradient(circle,transparent 0 18%,#a5d4fa66 18.5% 19%,transparent 19.5% 25%),linear-gradient(90deg,transparent calc(50% - .5px),#c1e4f7aa calc(50% - .5px),#c1e4f7aa calc(50% + .5px),transparent calc(50% + .5px)),linear-gradient(0deg,transparent calc(50% - .5px),#c1e4f7aa calc(50% - .5px),#c1e4f7aa calc(50% + .5px),transparent calc(50% + .5px));background-color:#17394b;background-blend-mode:normal}
+
+/* Two distinct traces, matching the pair legend in either theme. */
+#archive .signal-instrument svg{height:90px}
+#archive .signal-instrument path.echo-jaejun{stroke:#a68a43;stroke-width:1.4;animation-duration:5s}
+#archive .signal-instrument path.echo-dojun{stroke:#568fb4;stroke-width:1.4;animation-duration:6.5s}
+html[data-mode=dark] #archive .signal-instrument path.echo-jaejun{stroke:#faeda5}
+html[data-mode=dark] #archive .signal-instrument path.echo-dojun{stroke:#a5d4fa}
+#archive .signal-legend span:first-child{color:#8a7138}
+#archive .signal-legend span:last-child{color:#477c9f}
+html[data-mode=dark] #archive .signal-legend span:first-child{color:#faeda5}
+html[data-mode=dark] #archive .signal-legend span:last-child{color:#a5d4fa}
+@media(prefers-reduced-motion:reduce){#archive .signal-instrument path{animation:none;stroke-dasharray:none}}

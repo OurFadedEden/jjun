@@ -225,7 +225,7 @@
 <link rel="stylesheet" href="refinements.css?v=20261029-inline-locks">
 <link rel="stylesheet" href="daylight.css?v=20261029-inline-locks">
 <link rel="stylesheet" href="sonar.css?v=20261029-inline-locks">
-<link rel="stylesheet" href="locks.css?v=20261029-inline-locks"><link rel="stylesheet" href="atmosphere.css?v=20261030-sonar"><link rel="stylesheet" href="relationship.css?v=2"><link rel="stylesheet" href="photo-layout.css?v=5"><link rel="stylesheet" href="memory-archive.css?v=5"><link rel="stylesheet" href="messenger.css?v=2">
+<link rel="stylesheet" href="locks.css?v=20261029-inline-locks"><link rel="stylesheet" href="atmosphere.css?v=20261030-dual-echo"><link rel="stylesheet" href="relationship.css?v=2"><link rel="stylesheet" href="photo-layout.css?v=5"><link rel="stylesheet" href="memory-archive.css?v=5"><link rel="stylesheet" href="messenger.css?v=2">
 </head>
 <body class="boot-pending"><div id="bootStatus" role="status">기록 확인 중…</div>
 <section id="entrance">
@@ -268,7 +268,7 @@
     <div class="sonar-panel"><div class="radar" id="radar"><span class="radar-bearing north">000</span><span class="radar-bearing east">090</span><span class="radar-bearing south">180</span><span class="radar-bearing west">270</span><div class="radar-orbit"></div><i class="blip"></i><i class="blip b2"></i></div><div><div class="panel-label" id="radarTitle">SONAR MONITOR</div><div class="radar-data"><span id="radarDepth">DEPTH : UNKNOWN</span><span id="radarSignal">SIGNAL : 02 DETECTED</span><span class="gold" id="radarState">STATUS : STABLE</span></div></div></div>
     <section id="dayWidget" class="day-widget"></section>
     <div class="depth-instrument" aria-label="장식용 페어 공명 관측계"><div class="instrument-heading">RESONANCE <span>PAIR LINK</span></div><div class="depth-body"><div class="depth-scale"><span>000</span><span>250</span><span>500</span><span>750</span><span>1000</span><i></i></div><div class="depth-readout"><span>RESONANCE CHANNEL</span><strong>03<span>05</span></strong><small>두 신호 사이의 공명</small><div class="depth-bars" aria-hidden="true"></div><span>TWILIGHT ↔ DEEP SEA</span></div></div></div>
-    <div class="signal-instrument" aria-label="장식용 소나 파형"><div class="instrument-heading">ECHO TRACE <span>CH. 02</span></div><svg viewBox="0 0 240 50" aria-hidden="true"><path d="M0 25H20l5 -5 5 10 5 -5H52l5 -15 5 30 5 -15H94l4 -7 4 14 4 -7H133l6 -21 6 42 6 -21H182l5 -11 5 22 5 -11H240"/></svg><div class="signal-legend"><span>● JAEJUN / AMBER</span><span>● DOJUN / SKY</span></div></div>
+    <div class="signal-instrument" aria-label="재준과 도준의 두 신호 파형"><div class="instrument-heading">ECHO TRACE <span>CH. 02</span></div><svg viewBox="0 0 240 100" aria-hidden="true"><path class="echo-jaejun" d="M0 25H16l5 -4 5 8 5 -4H48l6 -16 6 32 6 -16H100l4 -8 4 16 4 -8H144l5 -12 5 24 5 -12H188l6 -19 6 38 6 -19H240"/><path class="echo-dojun" d="M0 75H20l5 -5 5 10 5 -5H52l5 -15 5 30 5 -15H94l4 -7 4 14 4 -7H133l6 -21 6 42 6 -21H182l5 -11 5 22 5 -11H240"/></svg><div class="signal-legend"><span>● JAEJUN / AMBER</span><span>● DOJUN / SKY</span></div></div>
 
     <div class="side-note" id="sideNote">CURRENT COORDINATES<br><span class="blue">34° / 03' / 05"</span><br>NO SIGNAL IS EVER LOST.</div>
    </aside>
