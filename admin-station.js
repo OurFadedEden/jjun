@@ -2,7 +2,7 @@ const stationLabels={protectImages:'사진 우클릭·드래그 방지 (스크�
 function renderStationSettings(){
  const root=document.getElementById('stationSettings');
  root.innerHTML=Object.entries({transmission:'랜덤 교신 · 접속할 때 한 줄',dayCounter:'수심계 · 디데이',bgm:'배경음악',messages:'대화 기록',decor:'발췌 사이트에서 가져온 장식',hud:'계기와 화면 문구'}).map(([section,title])=>`<section class="item-editor"><h3>${title}</h3>${section==='bgm'?'<p class="hint">MP3 경로(예: music/theme.mp3) 또는 YouTube 영상 링크를 넣으세요. watch·youtu.be·Shorts 링크를 지원합니다. YouTube는 헤더 아래에 보이는 영상 플레이어로 재생하며 음량은 플레이어에서 조절합니다. 임베드가 제한된 영상은 YouTube에서 열 수 있습니다.</p>':''}${section==='messages'?'<p class="hint">관리자가 편집해 공개하는 교신 기록입니다. 실제 메시지를 전송하거나 비공개 대화를 저장하지 않습니다.</p>':''}<div class="fields">${Object.entries(cfg[section]).filter(([key,value])=>key!=='items'&&['string','boolean','number'].includes(typeof value)).map(([key,value])=>{
- const path=section+'.'+key,label=stationLabels[key]||key;
+ const path=esc(section+'.'+key),label=esc(Object.hasOwn(stationLabels,key)?stationLabels[key]:key);
  if(section==='transmission'&&key==='lines')return `<div class="field full"><label>교신 문구 · 한 줄에 하나씩<textarea data-path="${path}">${esc(value)}</textarea></label><p class="hint">접속할 때 한 문구를 무작위로 표시합니다. 모두 지우면 표시하지 않습니다.</p></div>`;
  if(key==='frame')return `<div class="field"><label>${label}<select data-path="${path}">${['double','line','dashed'].map(x=>`<option ${value===x?'selected':''} value="${x}">${({double:'이중선',line:'선',dashed:'점선'})[x]}</option>`).join('')}</select></label></div>`;
  if(typeof value==='boolean')return `<div class="field"><label><input type="checkbox" data-path="${path}" ${value?'checked':''}> ${label}</label></div>`;
