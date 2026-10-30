@@ -5,6 +5,7 @@ const stationAudio = new Audio();
 stationAudio.preload='none';
 let dayTimer;
 function applyStation(){
+ window.PairPets?.configure(config.pets);
  const h=config.hud;
  const text=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value??''};
  text('.depth-instrument .instrument-heading',h.resonanceTitle+' / '+h.pairLabel);

@@ -27,7 +27,7 @@ html #archive .category-cover{background:var(--surface)}
  #archive #pageContent .subject p{max-width:100%;overflow-wrap:anywhere}
 }
 
-.mobile-natural-photo{display:none}
+html #archive .mobile-natural-photo{display:none}
 @media(max-width:760px){
  html #archive :is(.image-slot.has-image,.subject-image:has(.mobile-natural-photo)){aspect-ratio:auto!important;min-height:0;height:auto!important;background:none!important;padding:0;display:block}
  html #archive .mobile-natural-photo{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
