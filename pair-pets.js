@@ -60,21 +60,24 @@
     else if(scene==='cuddle'){angle=i?-9:9;hop=Math.abs(Math.sin(clock*3))*2}
    }
    p.el.dataset.motion=grabbed?'drag':dancing?'dance':walking?'walk':scene;
-   p.image.style.transform=`rotate(${grabbed?(i?10:-10):angle}deg)`;
+   const state=grabbed?'drag':p.reaction>clock?p.expression:dancing?'dance':p.y>0?'jump':walking?'walk':scene==='cuddle'?'together':Math.floor(clock/5)%2?'sit':'idle';
+   p.el.dataset.spriteState=state;
+   const animated=p.art.update(p.artConfig,state,clock,reduced.matches);
+   p.art.group.style.transform=`rotate(${animated?0:grabbed?(i?10:-10):angle}deg)`;
    paint(p,hop);
   });
   raf=requestAnimationFrame(tick);
  }
- function react(p){lastTouch=clock;p.reaction=clock+1.1;say(p,p.id==='jaejun'?'도준아, 이리 와.':'형, 같이 있어.');}
+ function react(p){lastTouch=clock;p.taps=clock-p.lastTap<2?p.taps+1:1;p.lastTap=clock;p.expression=p.taps>=3?'frown':'jump';p.reaction=clock+1.6;say(p,p.expression==='frown'?'잠깐만…!':p.id==='jaejun'?'도준아, 이리 와.':'형, 같이 있어.');p.art.update(p.artConfig,p.expression,clock,reduced.matches);p.el.dataset.spriteState=p.expression;}
  function create(){
   stage=document.createElement('div');stage.id='pairPetStage';stage.hidden=true;stage.setAttribute('aria-label','재준과 도준 캐릭터');
   pets=['jaejun','dojun'].map((id,i)=>{
    const el=document.createElement('button');el.type='button';el.className='pair-pet';el.dataset.pet=id;el.setAttribute('aria-label',`${i?'도준':'재준'} — 누르면 반응, 드래그로 이동`);
-   const image=document.createElement('img');image.src=`assets/pets/${id}.png`;image.alt='';image.draggable=false;
    const bubble=document.createElement('span');bubble.className='pet-bubble';bubble.hidden=true;
-   el.append(bubble,image);stage.append(el);
-   const p={id,el,image,bubble,x:0,y:0,size:0,target:0,vy:0,until:0,reaction:0};
-   image.onerror=()=>{el.hidden=true};
+   el.append(bubble);stage.append(el);
+   const art=PetArt.create(el),artConfig=PetArt.normalize(settings.characters?.[id],id);
+   const p={id,el,art,artConfig,bubble,x:0,y:0,size:0,target:0,vy:0,until:0,reaction:0,expression:'jump',taps:0,lastTap:-10};
+   art.update(artConfig,'idle',0,true);
    el.addEventListener('pointerdown',e=>{if(e.button!==0)return;lastTouch=clock;drag={p,id:e.pointerId,startX:e.clientX,startY:e.clientY,x:p.x,y:p.y,moved:false};el.setPointerCapture(e.pointerId);e.preventDefault()});
    el.addEventListener('pointermove',e=>{if(drag?.p!==p||drag.id!==e.pointerId)return;const dx=e.clientX-drag.startX,dy=e.clientY-drag.startY;drag.moved ||=Math.hypot(dx,dy)>5;p.x=clamp(drag.x+dx,0,Math.max(0,bounds.width-p.size));p.y=clamp(drag.y-dy,0,Math.max(0,bounds.height-p.size-35));p.target=p.x;p.vy=0;paint(p,0)});
    const release=e=>{if(drag?.p!==p)return;const tap=!drag.moved;drag=null;p.vy=0;scene='rest';nextScene=clock+4;if(tap&&e.type==='pointerup')react(p);if(paused||reduced.matches){p.y=0;paint(p,0)}};
@@ -93,5 +96,5 @@
   document.addEventListener('visibilitychange',sync);window.addEventListener('resize',layout);reduced.addEventListener('change',sync);
   layout();sync();
  }
- window.PairPets={configure(value){const v=value||{};settings={enabled:v.enabled!==false,desktopSize:number(v.desktopSize,112,70,150),mobileSize:number(v.mobileSize,80,56,105),rhythmBpm:number(v.rhythmBpm,100,40,180),idleSeconds:number(v.idleSeconds,12,5,120)};if(!stage)create();else{layout();sync()}}};
+ window.PairPets={configure(value){const v=value||{};settings={enabled:v.enabled!==false,desktopSize:number(v.desktopSize,112,70,150),mobileSize:number(v.mobileSize,80,56,105),rhythmBpm:number(v.rhythmBpm,100,40,180),idleSeconds:number(v.idleSeconds,12,5,120),characters:v.characters||{}};if(!stage)create();else{pets.forEach(p=>{p.artConfig=PetArt.normalize(settings.characters[p.id],p.id);p.art.reset();p.art.update(p.artConfig,'idle',clock,true)});layout();sync()}}};
 })();

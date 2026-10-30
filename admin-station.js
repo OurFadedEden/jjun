@@ -9,8 +9,8 @@ function renderStationSettings(){
  if(key==='frame')return `<div class="field"><label>${label}<select data-path="${path}">${['double','line','dashed'].map(x=>`<option ${value===x?'selected':''} value="${x}">${({double:'이중선',line:'선',dashed:'점선'})[x]}</option>`).join('')}</select></label></div>`;
  if(typeof value==='boolean')return `<div class="field"><label><input type="checkbox" data-path="${path}" ${value?'checked':''}> ${label}</label></div>`;
  return `<div class="field"><label>${label}<input type="${key==='startDate'?'date':typeof value==='number'?'number':'text'}" data-path="${path}" value="${esc(value)}" ${key==='volume'?'min="0" max="1" step="0.05"':''}></label></div>`;
- }).join('')}</div>${section==='bgm'?'<p class="hint">아래 목록에 곡을 추가하면 위의 단일 곡 대신 목록을 사용합니다. 목록이 비어 있으면 기존 곡을 사용합니다. 방문자는 드롭다운에서 선택한 뒤 재생 버튼을 누릅니다.</p><div id="bgmTrackEditors"></div><button class="btn" id="addBgmTrack" type="button">+ 곡 추가</button>':''}${section==='messages'?'<div id="messageEditors"></div><button class="btn" id="addMessage">+ 메시지 추가</button>':''}</section>`).join('');
- bindFields(root);renderBgmTrackEditors();renderMessageEditors();document.getElementById('addMessage').onclick=()=>{cfg.messages.items.push({sender:'',body:'',time:'',side:'left'});renderMessageEditors();renderJson()};
+ }).join('')}</div>${section==='bgm'?'<p class="hint">아래 목록에 곡을 추가하면 위의 단일 곡 대신 목록을 사용합니다. 목록이 비어 있으면 기존 곡을 사용합니다. 방문자는 드롭다운에서 선택한 뒤 재생 버튼을 누릅니다.</p><div id="bgmTrackEditors"></div><button class="btn" id="addBgmTrack" type="button">+ 곡 추가</button>':''}${section==='pets'?'<div id="petSpriteEditor"></div>':''}${section==='messages'?'<div id="messageEditors"></div><button class="btn" id="addMessage">+ 메시지 추가</button>':''}</section>`).join('');
+ bindFields(root);renderBgmTrackEditors();renderMessageEditors();renderPetEditor();document.getElementById('addMessage').onclick=()=>{cfg.messages.items.push({sender:'',body:'',time:'',side:'left'});renderMessageEditors();renderJson()};
 }
 function renderMessageEditors(){
  const root=document.getElementById('messageEditors');if(!root)return;
