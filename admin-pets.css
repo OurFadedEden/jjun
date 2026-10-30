@@ -1,5 +1,5 @@
 .pet-editor-preview{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0}
-#petPosePreview{position:relative;width:160px;height:160px;border:1px solid #b8ced9;background:repeating-conic-gradient(#e8eff2 0% 25%,#fafcfb 0% 50%) 50%/16px 16px;overflow:hidden}
+#petPosePreview{position:relative;width:150px;height:150px;border:1px solid #b8ced9;background:repeating-conic-gradient(#e8eff2 0% 25%,#fafcfb 0% 50%) 50%/16px 16px;overflow:hidden}
 #petPosePreview .pet-art{position:absolute;inset:0;display:block}
 #petPosePreview .pet-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 #petPosePreview .pet-art-tail{z-index:0}#petPosePreview .pet-art-body{z-index:1}#petPosePreview .pet-art-ears{z-index:2}
@@ -9,3 +9,7 @@
 .pet-frame>img{width:72px;height:72px;object-fit:contain;background:#eef3f5}
 .pet-frame .btn{padding:5px 8px}.pet-frame>span{font-size:11px}
 #petActionEditor summary{cursor:pointer;padding:12px 0;font-size:13px}
+
+.pet-pixel-body{position:absolute;inset:0;display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.pet-pixel-body[hidden]{display:none!important}
+.pet-art.is-pixel{transform:none!important}

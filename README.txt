@@ -243,3 +243,13 @@ pair-pets.js, pair-pets.css, assets/pets/jaejun.png, assets/pets/dojun.png을 �
 업로드 그림과 파츠는 내보낸 config.json에 포함됩니다. 별도 assets 업로드는 필요하지 않습니다.
 GIF는 자체 재생 속도를 사용하므로 프레임 단위 재생 제어에는 PNG/WebP를 권장합니다.
 추가 파일: pet-art.js, admin-pets.js, admin-pets.css. 기존 pair-pets.js/css와 index.html, admin.html, admin-station.js도 교체합니다.
+
+[기본 파스텔 도트 동작 세트]
+새 기본 세트는 캐릭터별 16개 그림으로 8가지 동작을 표현합니다.
+원본 시트: assets/pets/jaejun-pixel-sheet.png, assets/pets/dojun-pixel-sheet.png
+pet-pixels.js가 시트의 동작 프레임을 30×30 캔버스에 표시하고 정수 배율로 확대합니다.
+기본 도트 크기는 PC 90px / 모바일 60px이며 크기 설정은 30px 단위로 맞춰집니다.
+가만히 있기·앉기에서는 눈 깜빡임, 걷기·점프·찡그리기·춤·함께 있기·들어 올리기는 별도 그림을 사용합니다.
+기본 세트에는 몸 전체 동작이 그려져 있습니다. 귀·꼬리를 따로 조절하려면 사용자 그림과 분리 파츠를 등록하세요.
+사용자 동작 그림을 등록한 캐릭터는 그 그림을 우선하며 기존 config.json은 변경하지 않습니다.
+나루에 pet-pixels.js와 두 시트를 추가하고 index.html, admin.html, pet-art.js, pair-pets.js/css, admin-station.js, admin-pets.js/css를 교체합니다.

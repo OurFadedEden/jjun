@@ -1,6 +1,6 @@
 /* Lightweight sprite companions. Music state drives a shared visual beat, not audio analysis. */
 (()=>{
- const defaults={enabled:true,desktopSize:112,mobileSize:80,rhythmBpm:100,idleSeconds:12};
+ const defaults={enabled:true,desktopSize:90,mobileSize:60,rhythmBpm:100,idleSeconds:12};
  let settings={...defaults},stage,control,pets=[],running=false,raf=0,last=0,clock=0,nextScene=0,scene='rest',sceneEnd=0,drag=null,hidden=false,paused=false,lastTouch=0,bounds={width:0,height:0};
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -14,10 +14,10 @@
   const old=bounds;bounds={width:Math.max(0,r.width-12),height:Math.max(0,r.height-12)};
   Object.assign(stage.style,{left:`${r.left+6}px`,top:`${r.top+6}px`,width:`${bounds.width}px`,height:`${bounds.height}px`});
   stage.style.setProperty('--pet-size',`${size}px`);
-  for(const [i,p] of pets.entries()){p.size=size;p.x=clamp(old.width?p.x/old.width*bounds.width:bounds.width*.3+i*size,0,Math.max(0,bounds.width-size));p.y=clamp(p.y,0,Math.max(0,bounds.height-size-35));p.target=clamp(p.target||p.x,0,Math.max(0,bounds.width-size));paint(p,0)}
+  for(const [i,p] of pets.entries()){const petSize=p.artConfig.builtin?Math.max(60,Math.round(size/30)*30):size;p.el.style.width=p.el.style.height=`${petSize}px`;p.size=petSize;p.x=clamp(old.width?p.x/old.width*bounds.width:bounds.width*.3+i*p.size,0,Math.max(0,bounds.width-p.size));p.y=clamp(p.y,0,Math.max(0,bounds.height-p.size-35));p.target=clamp(p.target||p.x,0,Math.max(0,bounds.width-p.size));paint(p,0)}
  }
  function say(p,text){p.bubble.textContent=text;p.bubble.hidden=false;p.until=clock+2.4}
- function paint(p,hop){p.el.style.transform=`translate3d(${p.x}px,${Math.max(0,bounds.height-p.size-p.y-8-hop)}px,0)`}
+ function paint(p,hop){p.el.style.transform=`translate3d(${Math.round(p.x)}px,${Math.round(Math.max(0,bounds.height-p.size-p.y-8-hop))}px,0)`}
  function stop(){cancelAnimationFrame(raf);raf=0;running=false;last=0}
  function sync(){
   if(!stage)return;
@@ -62,7 +62,7 @@
    p.el.dataset.motion=grabbed?'drag':dancing?'dance':walking?'walk':scene;
    const state=grabbed?'drag':p.reaction>clock?p.expression:dancing?'dance':p.y>0?'jump':walking?'walk':scene==='cuddle'?'together':Math.floor(clock/5)%2?'sit':'idle';
    p.el.dataset.spriteState=state;
-   const animated=p.art.update(p.artConfig,state,clock,reduced.matches);
+   const animated=p.art.update(p.artConfig,state,state==='dance'?clock*settings.rhythmBpm/150:clock,reduced.matches);
    p.art.group.style.transform=`rotate(${animated?0:grabbed?(i?10:-10):angle}deg)`;
    paint(p,hop);
   });
@@ -96,5 +96,5 @@
   document.addEventListener('visibilitychange',sync);window.addEventListener('resize',layout);reduced.addEventListener('change',sync);
   layout();sync();
  }
- window.PairPets={configure(value){const v=value||{};settings={enabled:v.enabled!==false,desktopSize:number(v.desktopSize,112,70,150),mobileSize:number(v.mobileSize,80,56,105),rhythmBpm:number(v.rhythmBpm,100,40,180),idleSeconds:number(v.idleSeconds,12,5,120),characters:v.characters||{}};if(!stage)create();else{pets.forEach(p=>{p.artConfig=PetArt.normalize(settings.characters[p.id],p.id);p.art.reset();p.art.update(p.artConfig,'idle',clock,true)});layout();sync()}}};
+ window.PairPets={configure(value){const v=value||{};settings={enabled:v.enabled!==false,desktopSize:number(v.desktopSize,90,70,150),mobileSize:number(v.mobileSize,60,56,105),rhythmBpm:number(v.rhythmBpm,100,40,180),idleSeconds:number(v.idleSeconds,12,5,120),characters:v.characters||{}};if(!stage)create();else{pets.forEach(p=>{p.artConfig=PetArt.normalize(settings.characters[p.id],p.id);p.art.reset();p.art.update(p.artConfig,'idle',clock,true)});layout();sync()}}};
 })();
